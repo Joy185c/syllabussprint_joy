@@ -11,6 +11,8 @@ export interface Course {
   credits: number;
   description: string;
   created_at: string;
+  ai_exam_readiness?: number | null;
+  ai_exam_readiness_explanation?: string;
   assignments?: Assignment[];
   exams?: Exam[];
   topics?: Topic[];
@@ -114,6 +116,17 @@ export interface SyllabusFile {
   storage_url: string;
   raw_text: string;
   uploaded_at: string;
+}
+
+export interface WorkspaceAnalytics {
+  workspace_id: string;
+  ai_insights: {
+    recommendations: string[];
+    insights: string[];
+  };
+  analytics_hash: string;
+  is_generating: boolean;
+  updated_at: string;
 }
 
 export type UploadStatus =

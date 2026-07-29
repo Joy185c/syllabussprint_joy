@@ -25,6 +25,11 @@ export async function PATCH(request: NextRequest) {
       return Response.json({ error: error.message }, { status: 500 });
     }
 
+    if (updatedAssignment?.course_id) {
+       const { triggerAnalyticsRefreshByCourse } = await import('@/lib/analytics');
+       triggerAnalyticsRefreshByCourse(updatedAssignment.course_id);
+    }
+
     return Response.json({ success: true, assignment: updatedAssignment });
   } catch (err) {
     console.error('[Assignments] PATCH error:', err);

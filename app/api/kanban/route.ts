@@ -106,6 +106,11 @@ export async function PATCH(request: NextRequest) {
        }
     }
 
+    if (updatedCard?.course_id) {
+       const { triggerAnalyticsRefreshByCourse } = await import('@/lib/analytics');
+       triggerAnalyticsRefreshByCourse(updatedCard.course_id);
+    }
+
     return Response.json({ success: true, card: updatedCard });
   } catch (err) {
     console.error('[Kanban] PATCH error:', err);
@@ -166,6 +171,11 @@ export async function POST(request: NextRequest) {
          description: newCard.description || '',
          type: newCard.type || 'deadline'
        });
+    }
+
+    if (newCard?.course_id) {
+       const { triggerAnalyticsRefreshByCourse } = await import('@/lib/analytics');
+       triggerAnalyticsRefreshByCourse(newCard.course_id);
     }
 
     return Response.json({ success: true, card: newCard });

@@ -19,7 +19,7 @@ Rules & Guardrails:
    - ai_study_tips: 3-5 bullet points.
    - ai_common_mistakes: 3-5 bullet points.
 5. Difficulty Level: 'Beginner', 'Intermediate', or 'Advanced'.
-6. Estimated Study Time: e.g. '2 Hours', '4 Hours', '1 Week'.
+6. Estimated Study Time: Must be EXACTLY ONE of: "15 min", "30 min", "45 min", "1 hour", "2 hours", "3 hours", "4 hours". Estimate based on topic complexity.
 
 Required JSON Output Structure:
 {

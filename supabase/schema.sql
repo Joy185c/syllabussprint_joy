@@ -25,7 +25,18 @@ create table if not exists public.courses (
   credits integer not null default 3,
   description text not null default '',
   course_subject text not null default '',
+  ai_exam_readiness integer default null,
+  ai_exam_readiness_explanation text not null default '',
   created_at timestamptz not null default now()
+);
+
+-- 2.1 Workspace Analytics Cache
+create table if not exists public.workspace_analytics (
+  workspace_id text primary key,
+  ai_insights jsonb default '{}'::jsonb,
+  analytics_hash text not null default '',
+  is_generating boolean not null default false,
+  updated_at timestamptz not null default now()
 );
 
 -- 3. Topics (Weekly Schedule)

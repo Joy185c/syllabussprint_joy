@@ -85,6 +85,7 @@ export function KanbanCardComponent({ card, onStatusChange, onClick }: { card: K
         <div
           style={{ display: 'flex', gap: '0.5rem', borderTop: `1px solid ${colors.border}`, paddingTop: '0.75rem', marginTop: card.due_date ? 0 : '0.5rem' }}
           onPointerDown={(e) => e.stopPropagation()} // Prevent dnd-kit from intercepting button clicks
+          onClick={(e) => e.stopPropagation()} // Prevent card click (modal) from triggering when interacting with buttons
         >
           {card.status === 'todo' && (
             <button

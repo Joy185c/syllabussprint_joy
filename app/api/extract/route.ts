@@ -154,6 +154,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(`[Upload API] Saved components for course ${course.id}`);
+
+    const { triggerAnalyticsRefreshByWorkspace } = await import('@/lib/analytics');
+    triggerAnalyticsRefreshByWorkspace(workspace_id);
+
     return Response.json({
       success: true,
       course_id: courseId,
