@@ -145,7 +145,24 @@ export default function KanbanPage() {
                id={col.id}
                title={col.title}
                color={col.color}
-               cards={cards.filter(c => c.status === col.id).sort((a,b) => a.position - b.position)}
+               cards={cards.filter(c => c.status === col.id).sort((a, b) => {
+                 if (col.id === 'todo') {
+                   // Priority: High > Medium > Low
+                   const pMap = { high: 0, medium: 1, low: 2 };
+                   if (pMap[a.priority] !== pMap[b.priority]) return pMap[a.priority] - pMap[b.priority];
+                   // Type: Exams first (check title since type is not in DB schema)
+                   const aIsExam = a.title.toLowerCase().includes('exam');
+                   const bIsExam = b.title.toLowerCase().includes('exam');
+                   if (aIsExam && !bIsExam) return -1;
+                   if (!aIsExam && bIsExam) return 1;
+                   // Date: Closer dates first
+                   const aTime = a.due_date ? new Date(a.due_date).getTime() : Infinity;
+                   const bTime = b.due_date ? new Date(b.due_date).getTime() : Infinity;
+                   if (aTime !== bTime) return aTime - bTime;
+                 }
+                 // Default to manual position sort
+                 return a.position - b.position;
+               })}
                onStatusChange={handleStatusChange}
              />
           ))}
