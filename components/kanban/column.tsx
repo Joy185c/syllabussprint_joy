@@ -2,14 +2,16 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { KanbanCardComponent } from './card';
 import type { KanbanCard } from '@/types';
+import { useColors } from '@/lib/useColors';
 
 export function KanbanBoardColumn({ id, title, color, cards }: { id: string; title: string; color: string; cards: KanbanCard[] }) {
+  const colors = useColors();
   const { setNodeRef } = useDroppable({ id });
 
   return (
     <div className="kanban-col">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-        <h3 style={{ color: '#0F172A', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h3 style={{ color: colors.text, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: color }} />
           {title}
         </h3>
@@ -25,7 +27,7 @@ export function KanbanBoardColumn({ id, title, color, cards }: { id: string; tit
           ))}
         </SortableContext>
         {cards.length === 0 && (
-          <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.85rem', border: '1px dashed #E5E7EB', borderRadius: '12px' }}>
+          <div style={{ padding: '2rem 1rem', textAlign: 'center', color: colors.textSubtle, fontSize: '0.85rem', border: `1px dashed ${colors.border}`, borderRadius: '12px' }}>
             Drop cards here
           </div>
         )}

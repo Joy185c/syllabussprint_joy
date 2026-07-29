@@ -5,11 +5,13 @@ import { useQuery } from '@tanstack/react-query';
 import { getWorkspaceId } from '@/lib/workspace';
 import dynamic from 'next/dynamic';
 import { Loader2 } from 'lucide-react';
+import { useColors } from '@/lib/useColors';
 
 const CalendarWrapper = dynamic(() => import('@/components/CalendarWrapper'), { ssr: false });
 
 export default function CalendarPage() {
   const [workspaceId, setWorkspaceId] = useState('');
+  const colors = useColors();
 
   useEffect(() => {
     setWorkspaceId(getWorkspaceId());
@@ -54,8 +56,8 @@ export default function CalendarPage() {
   return (
     <div className="container" style={{ padding: '2rem 1.5rem' }}>
       <div className="page-header">
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>Master Calendar</h1>
-        <p style={{ color: '#4B5563', fontSize: '0.9rem' }}>All your assignments, exams, and study sessions in one view.</p>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: colors.text, marginBottom: '0.25rem' }}>Master Calendar</h1>
+        <p style={{ color: colors.textMuted, fontSize: '0.9rem' }}>All your assignments, exams, and study sessions in one view.</p>
       </div>
 
       <div className="glass" style={{ padding: '1.5rem', minHeight: '600px' }}>

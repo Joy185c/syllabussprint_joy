@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { getWorkspaceId } from '@/lib/workspace';
 import { BookOpen, ClipboardList, GraduationCap, Clock, TrendingUp, Upload, ArrowRight, Calendar } from 'lucide-react';
+import { useColors } from '@/lib/useColors';
 import type { Course, Assignment, Exam } from '@/types';
 
 interface DashboardData {
@@ -15,6 +16,7 @@ interface DashboardData {
 function StatCard({ icon: Icon, label, value, color, href }: {
   icon: typeof BookOpen; label: string; value: number | string; color: string; href?: string;
 }) {
+  const colors = useColors();
   const content = (
     <motion.div
       whileHover={{ y: -3 }}
@@ -30,10 +32,10 @@ function StatCard({ icon: Icon, label, value, color, href }: {
         }}>
           <Icon size={18} color={color} />
         </div>
-        {href && <ArrowRight size={14} color="#6B7280" />}
+        {href && <ArrowRight size={14} color={colors.textSubtle} />}
       </div>
-      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0F172A', lineHeight: 1 }}>{value}</div>
-      <div style={{ color: '#4B5563', fontSize: '0.85rem', marginTop: '0.25rem' }}>{label}</div>
+      <div style={{ fontSize: '2rem', fontWeight: 800, color: colors.text, lineHeight: 1 }}>{value}</div>
+      <div style={{ color: colors.textMuted, fontSize: '0.85rem', marginTop: '0.25rem' }}>{label}</div>
     </motion.div>
   );
   return href ? <Link href={href} style={{ textDecoration: 'none' }}>{content}</Link> : content;
@@ -41,6 +43,7 @@ function StatCard({ icon: Icon, label, value, color, href }: {
 
 export default function DashboardPage() {
   const [workspaceId, setWorkspaceId] = useState('');
+  const colors = useColors();
 
   useEffect(() => {
     setWorkspaceId(getWorkspaceId());
@@ -94,8 +97,8 @@ export default function DashboardPage() {
       <div className="container" style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass" style={{ maxWidth: '480px', margin: '0 auto', padding: '3rem 2rem' }}>
           <BookOpen size={48} color="#1E7B45" style={{ margin: '0 auto 1rem' }} />
-          <h2 style={{ color: '#0F172A', fontWeight: 700, fontSize: '1.5rem', marginBottom: '0.75rem' }}>No courses yet</h2>
-          <p style={{ color: '#4B5563', marginBottom: '2rem' }}>Upload your first syllabus to get started</p>
+          <h2 style={{ color: colors.text, fontWeight: 700, fontSize: '1.5rem', marginBottom: '0.75rem' }}>No courses yet</h2>
+          <p style={{ color: colors.textMuted, marginBottom: '2rem' }}>Upload your first syllabus to get started</p>
           <Link href="/upload" className="btn-primary" style={{ justifyContent: 'center' }}>
             <Upload size={16} /> Upload Syllabus
           </Link>
@@ -109,8 +112,8 @@ export default function DashboardPage() {
       <div className="page-header">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>Dashboard</h1>
-            <p style={{ color: '#4B5563', fontSize: '0.9rem' }}>{courses.length} course{courses.length !== 1 ? 's' : ''} loaded</p>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: colors.text, marginBottom: '0.25rem' }}>Dashboard</h1>
+            <p style={{ color: colors.textMuted, fontSize: '0.9rem' }}>{courses.length} course{courses.length !== 1 ? 's' : ''} loaded</p>
           </div>
           <Link href="/upload" className="btn-primary" style={{ fontSize: '0.875rem', padding: '0.6rem 1.25rem' }}>
             <Upload size={14} /> Upload More
@@ -135,19 +138,19 @@ export default function DashboardPage() {
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
         className="glass" style={{ padding: '1.25rem 1.5rem', marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-          <span style={{ color: '#0F172A', fontWeight: 600, fontSize: '0.9rem' }}>Overall Progress</span>
+          <span style={{ color: colors.text, fontWeight: 600, fontSize: '0.9rem' }}>Overall Progress</span>
           <span style={{ color: '#1E7B45', fontWeight: 700 }}>{completionPct}%</span>
         </div>
         <div className="progress-bar">
           <div className="progress-bar-fill" style={{ width: `${completionPct}%` }} />
         </div>
-        <p style={{ color: '#6B7280', fontSize: '0.8rem', marginTop: '0.4rem' }}>{completed} of {allAssignments.length} assignments completed</p>
+        <p style={{ color: colors.textMuted, fontSize: '0.8rem', marginTop: '0.4rem' }}>{completed} of {allAssignments.length} assignments completed</p>
       </motion.div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.5rem' }}>
         {/* Courses */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="glass" style={{ padding: '1.5rem' }}>
-          <h2 style={{ color: '#0F172A', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <h2 style={{ color: colors.text, fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <BookOpen size={16} color="#1E7B45" /> My Courses
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -164,10 +167,10 @@ export default function DashboardPage() {
                   <BookOpen size={16} color="#fff" />
                 </div>
                 <div style={{ flex: 1, overflow: 'hidden' }}>
-                  <div style={{ color: '#0F172A', fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.title}</div>
-                  <div style={{ color: '#4B5563', fontSize: '0.75rem' }}>{c.course_code} · {c.semester}</div>
+                  <div style={{ color: colors.text, fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.title}</div>
+                  <div style={{ color: colors.textMuted, fontSize: '0.75rem' }}>{c.course_code} · {c.semester}</div>
                 </div>
-                <ArrowRight size={14} color="#6B7280" />
+                <ArrowRight size={14} color={colors.textSubtle} />
               </Link>
             ))}
           </div>
@@ -175,11 +178,11 @@ export default function DashboardPage() {
 
         {/* Upcoming */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="glass" style={{ padding: '1.5rem' }}>
-          <h2 style={{ color: '#0F172A', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <h2 style={{ color: colors.text, fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Clock size={16} color="#F59E0B" /> Upcoming Deadlines
           </h2>
           {upcoming.length === 0 ? (
-            <p style={{ color: '#4B5563', fontSize: '0.875rem' }}>No upcoming deadlines</p>
+            <p style={{ color: colors.textMuted, fontSize: '0.875rem' }}>No upcoming deadlines</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {upcoming.map((item, i) => {
@@ -188,11 +191,11 @@ export default function DashboardPage() {
                 const title = isExam ? `${(item as Exam).type} Exam` : (item as Assignment).title;
                 const daysLeft = date ? Math.ceil((new Date(date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : null;
                 return (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem', borderRadius: '10px', background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem', borderRadius: '10px', background: colors.surfaceAlt, border: `1px solid ${colors.border}` }}>
                     <Calendar size={16} color={isExam ? '#DC2626' : '#1E7B45'} />
                     <div style={{ flex: 1, overflow: 'hidden' }}>
-                      <div style={{ color: '#0F172A', fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</div>
-                      {date && <div style={{ color: '#4B5563', fontSize: '0.75rem' }}>{new Date(date).toLocaleDateString()}</div>}
+                      <div style={{ color: colors.text, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</div>
+                      {date && <div style={{ color: colors.textMuted, fontSize: '0.75rem' }}>{new Date(date).toLocaleDateString()}</div>}
                     </div>
                     {daysLeft !== null && (
                       <span style={{

@@ -5,9 +5,11 @@ import { useQuery } from '@tanstack/react-query';
 import { getWorkspaceId } from '@/lib/workspace';
 import { Loader2, Calendar as CalIcon, BookOpen, AlertCircle, FileText } from 'lucide-react';
 import type { TimelineItem } from '@/types';
+import { useColors } from '@/lib/useColors';
 
 export default function TimelinePage() {
   const [workspaceId, setWorkspaceId] = useState('');
+  const colors = useColors();
 
   useEffect(() => {
     setWorkspaceId(getWorkspaceId());
@@ -45,14 +47,14 @@ export default function TimelinePage() {
   return (
     <div className="container" style={{ padding: '2rem 1.5rem' }}>
       <div className="page-header">
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>Study Timeline</h1>
-        <p style={{ color: '#4B5563', fontSize: '0.9rem' }}>Chronological roadmap of all upcoming milestones and study sessions</p>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: colors.text, marginBottom: '0.25rem' }}>Study Timeline</h1>
+        <p style={{ color: colors.textMuted, fontSize: '0.9rem' }}>Chronological roadmap of all upcoming milestones and study sessions</p>
       </div>
 
       {items.length === 0 ? (
          <div className="glass" style={{ padding: '3rem', textAlign: 'center' }}>
            <CalIcon size={48} color="#1E7B45" style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
-           <p style={{ color: '#4B5563' }}>No timeline events found. Upload a syllabus to generate a study plan.</p>
+           <p style={{ color: colors.textMuted }}>No timeline events found. Upload a syllabus to generate a study plan.</p>
          </div>
       ) : (
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
@@ -77,12 +79,12 @@ export default function TimelinePage() {
                   return (
                     <div key={item.id} style={{ display: 'flex', gap: '1.5rem', marginBottom: idx === weekItems.length - 1 ? 0 : '1.5rem', position: 'relative', paddingLeft: '3rem' }}>
                       {/* Node point */}
-                      <div style={{ position: 'absolute', left: '1.25rem', top: '0.25rem', transform: 'translateX(-50%)', width: '12px', height: '12px', borderRadius: '50%', background: color, border: '3px solid #FFFFFF', zIndex: 2, boxShadow: `0 0 10px ${color}80` }} />
+                      <div style={{ position: 'absolute', left: '1.25rem', top: '0.25rem', transform: 'translateX(-50%)', width: '12px', height: '12px', borderRadius: '50%', background: color, border: `3px solid ${colors.surface}`, zIndex: 2, boxShadow: `0 0 10px ${color}80` }} />
                       
                       {/* Content */}
                       <div className="glass glass-hover" style={{ flex: 1, padding: '1.25rem', borderLeft: `3px solid ${color}` }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                          <h4 style={{ color: '#0F172A', fontWeight: 600, fontSize: '1.05rem', margin: 0 }}>{item.title}</h4>
+                          <h4 style={{ color: colors.text, fontWeight: 600, fontSize: '1.05rem', margin: 0 }}>{item.title}</h4>
                           <span style={{ fontSize: '0.75rem', fontWeight: 600, color, background: `${color}15`, padding: '2px 8px', borderRadius: '100px', textTransform: 'capitalize' }}>
                             {item.type}
                           </span>
@@ -90,7 +92,7 @@ export default function TimelinePage() {
                         <div style={{ color: '#1E7B45', fontSize: '0.8rem', fontWeight: 500, marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                           <CalIcon size={12} /> {dateStr} • {item.courses.title}
                         </div>
-                        {item.description && <p style={{ color: '#4B5563', fontSize: '0.85rem', margin: 0 }}>{item.description}</p>}
+                        {item.description && <p style={{ color: colors.textMuted, fontSize: '0.85rem', margin: 0 }}>{item.description}</p>}
                       </div>
                     </div>
                   );

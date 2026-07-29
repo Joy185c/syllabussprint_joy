@@ -6,10 +6,12 @@ import { getWorkspaceId } from '@/lib/workspace';
 import { use, Suspense } from 'react';
 import { BookOpen, User, Calendar as CalIcon, Clock, ChevronRight, FileText, CheckCircle, Circle, Target } from 'lucide-react';
 import type { Course } from '@/types';
+import { useColors } from '@/lib/useColors';
 
 function CourseContent({ id }: { id: string }) {
   const [workspaceId, setWorkspaceId] = useState('');
   const [activeTab, setActiveTab] = useState<'overview' | 'assignments' | 'topics'>('overview');
+  const colors = useColors();
 
   useEffect(() => {
     setWorkspaceId(getWorkspaceId());
@@ -53,16 +55,16 @@ function CourseContent({ id }: { id: string }) {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(128,194,66,0.15)', color: '#0F4C3A', padding: '0.25rem 0.75rem', borderRadius: '100px', fontSize: '0.8rem', fontWeight: 600, marginBottom: '1rem' }}>
             {course.course_code} • {course.semester} • {course.credits} Credits
           </div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.5rem', lineHeight: 1.2 }}>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: colors.text, marginBottom: '0.5rem', lineHeight: 1.2 }}>
             {course.title}
           </h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', color: '#4B5563', fontSize: '0.9rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', color: colors.textMuted, fontSize: '0.9rem' }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
               <User size={16} /> {course.instructor || 'Instructor TBA'}
             </span>
           </div>
           {course.description && (
-             <p style={{ marginTop: '1.5rem', color: '#4B5563', lineHeight: 1.6, maxWidth: '800px' }}>
+             <p style={{ marginTop: '1.5rem', color: colors.textMuted, lineHeight: 1.6, maxWidth: '800px' }}>
                {course.description}
              </p>
           )}
@@ -77,7 +79,7 @@ function CourseContent({ id }: { id: string }) {
             onClick={() => setActiveTab(tab)}
             style={{
               background: 'none', border: 'none', padding: '0.5rem 1rem', cursor: 'pointer',
-              color: activeTab === tab ? '#0F4C3A' : '#9CA3AF',
+              color: activeTab === tab ? '#0F4C3A' : colors.textSubtle,
               fontWeight: activeTab === tab ? 600 : 400,
               position: 'relative',
               textTransform: 'capitalize'
@@ -95,19 +97,19 @@ function CourseContent({ id }: { id: string }) {
       <div className="glass" style={{ padding: '1.5rem' }}>
         {activeTab === 'overview' && (
            <div>
-             <h3 style={{ color: '#0F172A', fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem' }}>Syllabus Summary</h3>
+             <h3 style={{ color: colors.text, fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem' }}>Syllabus Summary</h3>
              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-               <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '12px', border: '1px solid #E5E7EB', boxShadow: '0 4px 12px rgba(15,76,58,0.03)' }}>
+               <div style={{ background: colors.surfaceAlt, padding: '1rem', borderRadius: '12px', border: `1px solid ${colors.border}`, boxShadow: colors.card.boxShadow }}>
                  <div style={{ color: '#0F4C3A', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.25rem' }}>TOTAL ASSIGNMENTS</div>
-                 <div style={{ fontSize: '1.75rem', color: '#0F172A', fontWeight: 800 }}>{assignments.length}</div>
+                 <div style={{ fontSize: '1.75rem', color: colors.text, fontWeight: 800 }}>{assignments.length}</div>
                </div>
-               <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '12px', border: '1px solid #E5E7EB', boxShadow: '0 4px 12px rgba(15,76,58,0.03)' }}>
+               <div style={{ background: colors.surfaceAlt, padding: '1rem', borderRadius: '12px', border: `1px solid ${colors.border}`, boxShadow: colors.card.boxShadow }}>
                  <div style={{ color: '#DC2626', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.25rem' }}>TOTAL EXAMS</div>
-                 <div style={{ fontSize: '1.75rem', color: '#0F172A', fontWeight: 800 }}>{course.exams?.length || 0}</div>
+                 <div style={{ fontSize: '1.75rem', color: colors.text, fontWeight: 800 }}>{course.exams?.length || 0}</div>
                </div>
-               <div style={{ background: '#FFFFFF', padding: '1rem', borderRadius: '12px', border: '1px solid #E5E7EB', boxShadow: '0 4px 12px rgba(15,76,58,0.03)' }}>
+               <div style={{ background: colors.surfaceAlt, padding: '1rem', borderRadius: '12px', border: `1px solid ${colors.border}`, boxShadow: colors.card.boxShadow }}>
                  <div style={{ color: '#16A34A', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.25rem' }}>COURSE TOPICS</div>
-                 <div style={{ fontSize: '1.75rem', color: '#0F172A', fontWeight: 800 }}>{topics.length}</div>
+                 <div style={{ fontSize: '1.75rem', color: colors.text, fontWeight: 800 }}>{topics.length}</div>
                </div>
              </div>
            </div>
@@ -115,13 +117,13 @@ function CourseContent({ id }: { id: string }) {
 
         {activeTab === 'assignments' && (
           <div>
-            {assignments.length === 0 ? <p style={{ color: '#4B5563' }}>No assignments extracted.</p> : (
+            {assignments.length === 0 ? <p style={{ color: colors.textMuted }}>No assignments extracted.</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {assignments.map(a => (
-                  <div key={a.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E5E7EB' }}>
+                  <div key={a.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: colors.surfaceAlt, borderRadius: '10px', border: `1px solid ${colors.border}` }}>
                     <div>
-                      <div style={{ color: '#0F172A', fontWeight: 600, marginBottom: '0.25rem' }}>{a.title}</div>
-                      <div style={{ color: '#4B5563', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <div style={{ color: colors.text, fontWeight: 600, marginBottom: '0.25rem' }}>{a.title}</div>
+                      <div style={{ color: colors.textMuted, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         {a.deadline && <><CalIcon size={14}/> {new Date(a.deadline).toLocaleDateString()}</>}
                         {a.weight > 0 && <span style={{ padding: '2px 6px', background: 'rgba(30,123,69,0.1)', color: '#1E7B45', borderRadius: '4px', fontSize: '0.75rem' }}>{a.weight}% of grade</span>}
                       </div>
@@ -136,15 +138,15 @@ function CourseContent({ id }: { id: string }) {
 
         {activeTab === 'topics' && (
           <div>
-            {topics.length === 0 ? <p style={{ color: '#4B5563' }}>No topics extracted.</p> : (
+            {topics.length === 0 ? <p style={{ color: colors.textMuted }}>No topics extracted.</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {topics.map(t => (
-                  <div key={t.id} style={{ padding: '1rem', background: '#FFFFFF', borderRadius: '10px', border: '1px solid #E5E7EB' }}>
+                  <div key={t.id} style={{ padding: '1rem', background: colors.surfaceAlt, borderRadius: '10px', border: `1px solid ${colors.border}` }}>
                     <div style={{ color: '#1E7B45', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.25rem' }}>WEEK {t.week}</div>
-                    <div style={{ color: '#0F172A', fontWeight: 600, fontSize: '1.05rem', marginBottom: '0.5rem' }}>{t.topic}</div>
+                    <div style={{ color: colors.text, fontWeight: 600, fontSize: '1.05rem', marginBottom: '0.5rem' }}>{t.topic}</div>
                     {t.reading && (
-                      <div style={{ display: 'flex', gap: '0.5rem', color: '#4B5563', fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                         <BookOpen size={16} color="#9CA3AF" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <div style={{ display: 'flex', gap: '0.5rem', color: colors.textMuted, fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                         <BookOpen size={16} color={colors.textSubtle} style={{ flexShrink: 0, marginTop: '2px' }} />
                          <span>{t.reading}</span>
                       </div>
                     )}

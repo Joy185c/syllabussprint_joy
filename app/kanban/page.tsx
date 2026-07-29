@@ -7,6 +7,7 @@ import { SortableContext, arrayMove, sortableKeyboardCoordinates, verticalListSo
 import { getWorkspaceId } from '@/lib/workspace';
 import { KanbanBoardColumn } from '@/components/kanban/column';
 import type { KanbanCard } from '@/types';
+import { useColors } from '@/lib/useColors';
 import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -19,6 +20,7 @@ const COLUMNS = [
 export default function KanbanPage() {
   const [workspaceId, setWorkspaceId] = useState('');
   const queryClient = useQueryClient();
+  const colors = useColors();
 
   useEffect(() => {
     setWorkspaceId(getWorkspaceId());
@@ -110,8 +112,8 @@ export default function KanbanPage() {
   return (
     <div className="container" style={{ padding: '2rem 1.5rem', height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
       <div className="page-header">
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>Kanban Board</h1>
-        <p style={{ color: '#4B5563', fontSize: '0.9rem' }}>Drag and drop tasks to track your progress</p>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: colors.text, marginBottom: '0.25rem' }}>Kanban Board</h1>
+        <p style={{ color: colors.textMuted, fontSize: '0.9rem' }}>Drag and drop tasks to track your progress</p>
       </div>
 
       <div style={{ display: 'flex', gap: '1.5rem', flex: 1, overflowX: 'auto', paddingBottom: '1rem' }}>
