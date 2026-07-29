@@ -58,10 +58,12 @@ export default function LandingPage() {
               AI-Powered Academic Planner
             </div>
 
-            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', fontWeight: 800, lineHeight: 1.1, marginBottom: '1.5rem' }}>
-              <span className="gradient-text">SyllabusSprint</span>
-              <br />
-              <span style={{ color: '#e0e7ff' }}>Your AI Study Companion</span>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+              <img src="/logo.png" alt="SyllabusSprint Logo" style={{ height: '180px', width: 'auto', objectFit: 'contain' }} />
+            </div>
+
+            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: '1.5rem', color: '#e0e7ff' }}>
+              Your AI Study Companion
             </h1>
 
             <p style={{ fontSize: '1.15rem', color: '#9ca3af', maxWidth: '600px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
@@ -190,8 +192,8 @@ export default function LandingPage() {
             viewport={{ once: true }}
             style={{ padding: '3rem 2rem', maxWidth: '600px', margin: '0 auto' }}
           >
-            <div style={{ marginBottom: '1rem' }}>
-              <Zap size={36} color="#818cf8" />
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+              <img src="/logo.png" alt="SyllabusSprint Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain' }} />
             </div>
             <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e0e7ff', marginBottom: '1rem' }}>
               Ready to sprint through your semester?

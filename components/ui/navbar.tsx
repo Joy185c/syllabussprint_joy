@@ -35,18 +35,12 @@ export function Navbar() {
     >
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
-          <div style={{
-            width: '32px', height: '32px',
-            background: 'linear-gradient(135deg, #4f46e5, #9333ea)',
-            borderRadius: '8px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <Zap size={16} color="#fff" />
-          </div>
-          <span style={{ fontWeight: 700, fontSize: '1.1rem', color: '#e0e7ff' }}>
-            Syllabus<span className="gradient-text">Sprint</span>
-          </span>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <img 
+            src="/logo.png" 
+            alt="SyllabusSprint Logo" 
+            style={{ height: '44px', width: 'auto', objectFit: 'contain' }} 
+          />
         </Link>
 
         {/* Nav links */}
