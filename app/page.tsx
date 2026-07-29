@@ -6,6 +6,7 @@ import {
   Upload, Clock, Kanban, Calendar, BarChart3,
   FileText, Brain, CheckCircle, ArrowRight, Zap, Sparkles
 } from 'lucide-react';
+import { useColors } from '@/lib/useColors';
 
 const features = [
   { icon: FileText, title: 'PDF Extraction', desc: 'Reads any syllabus PDF or Markdown', color: '#1E7B45' },
@@ -34,6 +35,7 @@ const itemVariants = {
 };
 
 export default function LandingPage() {
+  const colors = useColors();
   return (
     <div style={{ position: 'relative', overflow: 'hidden' }}>
       {/* Ambient orbs */}
@@ -52,7 +54,7 @@ export default function LandingPage() {
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
               background: 'rgba(128,194,66,0.15)', border: '1px solid rgba(128,194,66,0.4)',
               borderRadius: '100px', padding: '0.35rem 1rem', marginBottom: '1.5rem',
-              fontSize: '0.85rem', color: '#0F4C3A', fontWeight: 600
+              fontSize: '0.85rem', color: colors.text, fontWeight: 600
             }}>
               <Sparkles size={14} />
               AI-Powered Academic Planner
@@ -62,11 +64,11 @@ export default function LandingPage() {
               <img src="/logo.png" alt="SyllabusSprint Logo" style={{ height: '180px', width: 'auto', objectFit: 'contain' }} />
             </div>
 
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: '1.5rem', color: '#0F4C3A' }}>
+            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: '1.5rem', color: colors.text }}>
               Your AI Study Companion
             </h1>
 
-            <p style={{ fontSize: '1.15rem', color: '#4B5563', maxWidth: '600px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '1.15rem', color: colors.textMuted, maxWidth: '600px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
               Upload your university syllabus and instantly generate a visual Kanban board,
               study timeline, assignment tracker, and exam schedule — all powered by AI.
             </p>
@@ -77,7 +79,7 @@ export default function LandingPage() {
                 <span key={f} style={{
                   background: 'rgba(30,123,69,0.1)', border: '1px solid rgba(30,123,69,0.2)',
                   borderRadius: '100px', padding: '0.35rem 1rem',
-                  fontSize: '0.85rem', color: '#1E7B45', fontWeight: 500
+                  fontSize: '0.85rem', color: colors.isDark ? '#80C242' : '#1E7B45', fontWeight: 500
                 }}>{f}</span>
               ))}
             </div>
@@ -87,7 +89,7 @@ export default function LandingPage() {
               Upload Syllabus — It&apos;s Free
               <ArrowRight size={16} />
             </Link>
-            <p style={{ marginTop: '1rem', fontSize: '0.8rem', color: '#6b7280' }}>No signup required · Works instantly</p>
+            <p style={{ marginTop: '1rem', fontSize: '0.8rem', color: colors.textSubtle }}>No signup required · Works instantly</p>
           </motion.div>
         </div>
       </section>
@@ -110,8 +112,8 @@ export default function LandingPage() {
                 <div style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
                   padding: '1.25rem 1.5rem',
-                  background: '#FFFFFF',
-                  border: '1px solid #E5E7EB',
+                  background: colors.surfaceAlt,
+                  border: `1px solid ${colors.border}`,
                   borderRadius: '16px',
                   minWidth: '120px',
                   boxShadow: '0 4px 12px rgba(15, 76, 58, 0.03)',
@@ -125,8 +127,8 @@ export default function LandingPage() {
                   }}>
                     <step.icon size={20} color="#fff" />
                   </div>
-                  <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0F172A' }}>{step.label}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#4B5563', textAlign: 'center' }}>{step.desc}</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.9rem', color: colors.text }}>{step.label}</span>
+                  <span style={{ fontSize: '0.75rem', color: colors.textMuted, textAlign: 'center' }}>{step.desc}</span>
                 </div>
                 {i < steps.length - 1 && (
                   <ArrowRight size={20} color="#CBD5E1" style={{ margin: '0 0.5rem' }} />
@@ -146,10 +148,10 @@ export default function LandingPage() {
             viewport={{ once: true }}
             style={{ textAlign: 'center', marginBottom: '3rem' }}
           >
-            <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 700, color: colors.text, marginBottom: '0.75rem' }}>
               Everything you need to <span className="gradient-text">ace your semester</span>
             </h2>
-            <p style={{ color: '#4B5563', fontSize: '1rem' }}>Upload once, organized forever</p>
+            <p style={{ color: colors.textMuted, fontSize: '1rem' }}>Upload once, organized forever</p>
           </motion.div>
 
           <motion.div
@@ -175,8 +177,8 @@ export default function LandingPage() {
                 }}>
                   <f.icon size={22} color={f.color} />
                 </div>
-                <h3 style={{ fontWeight: 700, color: '#0F172A', marginBottom: '0.4rem' }}>{f.title}</h3>
-                <p style={{ color: '#4B5563', fontSize: '0.9rem', lineHeight: 1.6 }}>{f.desc}</p>
+                <h3 style={{ fontWeight: 700, color: colors.text, marginBottom: '0.4rem' }}>{f.title}</h3>
+                <p style={{ color: colors.textMuted, fontSize: '0.9rem', lineHeight: 1.6 }}>{f.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -196,10 +198,10 @@ export default function LandingPage() {
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <img src="/logo.png" alt="SyllabusSprint Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain' }} />
             </div>
-            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F172A', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: colors.text, marginBottom: '1rem' }}>
               Ready to sprint through your semester?
             </h2>
-            <p style={{ color: '#4B5563', marginBottom: '2rem' }}>
+            <p style={{ color: colors.textMuted, marginBottom: '2rem' }}>
               Upload your syllabus and get a complete academic plan in under 60 seconds.
             </p>
             <Link href="/upload" className="btn-primary">
