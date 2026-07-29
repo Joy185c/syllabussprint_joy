@@ -55,6 +55,14 @@ export interface KanbanCard {
   priority: 'low' | 'medium' | 'high';
   due_date: string | null;
   position: number;
+  type?: string;
+  courses?: {
+    title: string;
+    course_code: string;
+    syllabus_files?: {
+      filename: string;
+    };
+  };
 }
 
 export interface TimelineItem {

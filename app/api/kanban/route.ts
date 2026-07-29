@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from('kanban_cards')
-      .select('*, courses!inner(workspace_id)')
+      .select('*, courses!inner(workspace_id, title, course_code, syllabus_files(filename))')
       .eq('courses.workspace_id', workspaceId)
       .order('position', { ascending: true });
 
