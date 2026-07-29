@@ -8,15 +8,20 @@ import { BookOpen, User, Calendar as CalIcon, Clock, ChevronRight, FileText, Che
 import type { Course, Topic } from '@/types';
 import { useColors } from '@/lib/useColors';
 import { TopicModal } from '@/components/course/topic-modal';
+import { AssignmentModal } from '@/components/course/assignment-modal';
+import type { Assignment } from '@/types';
 
 function CourseContent({ id }: { id: string }) {
   const [workspaceId, setWorkspaceId] = useState('');
   const [activeTab, setActiveTab] = useState<'overview' | 'assignments' | 'topics'>('overview');
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Topic Modal State
+  // Modal States
   const [isTopicModalOpen, setIsTopicModalOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+  
+  const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
 
   const colors = useColors();
 
@@ -32,6 +37,11 @@ function CourseContent({ id }: { id: string }) {
       return res.json();
     },
     enabled: !!workspaceId,
+    refetchInterval: (query) => {
+      const topics = query.state?.data?.course?.topics || [];
+      const isProcessing = topics.some(t => t.ai_status === 'queued' || t.ai_status === 'generating');
+      return isProcessing ? 2000 : false;
+    }
   });
 
   if (isLoading) return (
@@ -140,7 +150,18 @@ function CourseContent({ id }: { id: string }) {
             {assignments.length === 0 ? <p style={{ color: colors.textMuted }}>No assignments extracted.</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {assignments.map(a => (
-                  <div key={a.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1rem', background: colors.surfaceAlt, borderRadius: '10px', border: `1px solid ${colors.border}` }}>
+                  <div 
+                    key={a.id} 
+                    onClick={() => { setSelectedAssignment(a); setIsAssignmentModalOpen(true); }}
+                    style={{ 
+                      display: 'flex', alignItems: 'center', justifyContent: 'space-between', 
+                      padding: '1rem', background: colors.surfaceAlt, borderRadius: '10px', 
+                      border: `1px solid ${colors.border}`, cursor: 'pointer',
+                      transition: 'all 0.2s', boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
+                  >
                     <div>
                       <div style={{ color: colors.text, fontWeight: 600, marginBottom: '0.25rem' }}>{a.title}</div>
                       <div style={{ color: colors.textMuted, fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -148,7 +169,7 @@ function CourseContent({ id }: { id: string }) {
                         {a.weight > 0 && <span style={{ padding: '2px 6px', background: 'rgba(30,123,69,0.1)', color: '#1E7B45', borderRadius: '4px', fontSize: '0.75rem' }}>{a.weight}% of grade</span>}
                       </div>
                     </div>
-                    {a.status === 'completed' ? <CheckCircle color="#16A34A" /> : <Circle color="#D1D5DB" />}
+                    {a.status === 'completed' ? <CheckCircle color="#16A34A" /> : <ChevronRight color={colors.border} />}
                   </div>
                 ))}
               </div>
@@ -169,6 +190,28 @@ function CourseContent({ id }: { id: string }) {
               />
             </div>
             
+            {(() => {
+              const totalTopics = topics.length;
+              const completedTopics = topics.filter((t: Topic) => t.ai_status === 'completed').length;
+              const isProcessing = topics.some((t: Topic) => t.ai_status === 'queued' || t.ai_status === 'generating');
+              
+              if (totalTopics > 0 && isProcessing) {
+                return (
+                  <div style={{ marginBottom: '1.5rem', padding: '1rem', background: 'rgba(30,123,69,0.05)', borderRadius: '12px', border: '1px solid rgba(30,123,69,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div className="spinner" style={{ width: '20px', height: '20px', border: '3px solid rgba(30,123,69,0.2)', borderTopColor: '#1E7B45', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                      <span style={{ color: '#1E7B45', fontWeight: 600 }}>Generating AI Learning Guides...</span>
+                    </div>
+                    <div style={{ fontSize: '0.9rem', color: colors.text, fontWeight: 700 }}>
+                      {completedTopics} / {totalTopics} Topics Completed
+                    </div>
+                    <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
+                  </div>
+                );
+              }
+              return null;
+            })()}
+
             {filteredTopics.length === 0 ? <p style={{ color: colors.textMuted }}>No topics found.</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {filteredTopics.map((t: Topic) => (
@@ -221,6 +264,12 @@ function CourseContent({ id }: { id: string }) {
         allAssignments={assignments}
         allExams={course.exams || []}
         onNavigate={(topic) => setSelectedTopic(topic)}
+      />
+
+      <AssignmentModal 
+        isOpen={isAssignmentModalOpen}
+        onClose={() => setIsAssignmentModalOpen(false)}
+        assignment={selectedAssignment}
       />
     </div>
   );

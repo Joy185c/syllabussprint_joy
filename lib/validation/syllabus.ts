@@ -34,6 +34,23 @@ export const TopicSchema = z.object({
   notes: z.string().optional().default(''),
 });
 
+export const EnrichedTopicSchema = z.object({
+  topic_id: z.string(),
+  description_confidence: z.enum(['high', 'medium', 'low']).optional().default('low'),
+  ai_summary: z.string().optional().default(''),
+  ai_key_concepts: z.array(z.string()).optional().default([]),
+  ai_learning_outcomes: z.array(z.string()).optional().default([]),
+  ai_practice: z.array(z.string()).optional().default([]),
+  ai_study_tips: z.array(z.string()).optional().default([]),
+  ai_common_mistakes: z.array(z.string()).optional().default([]),
+  estimated_study_time: z.string().optional().default(''),
+  difficulty_level: z.string().optional().default(''),
+});
+
+export const EnrichmentResultSchema = z.object({
+  enriched_topics: z.array(EnrichedTopicSchema)
+});
+
 // ── Grade Weight ──────────────────────────────────────────────────────────────
 export const WeightSchema = z.object({
   category: z.string(),

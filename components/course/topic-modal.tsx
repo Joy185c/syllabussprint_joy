@@ -69,6 +69,44 @@ export function TopicModal({ isOpen, onClose, topic, allTopics, allAssignments, 
     }
   });
 
+  const regenerateMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('/api/topics/enrich', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic_id: topic!.id, force: true }),
+      });
+      if (!res.ok) throw new Error('Failed to regenerate AI insights');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['course'] });
+      toast.success('AI insights regenerated successfully');
+    },
+    onError: () => {
+      toast.error('Failed to regenerate AI insights');
+    }
+  });
+
+  const resetMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('/api/topics/reset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic_id: topic!.id }),
+      });
+      if (!res.ok) throw new Error('Failed to reset AI insights');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['course'] });
+      toast.success('AI insights reset successfully');
+    },
+    onError: () => {
+      toast.error('Failed to reset AI insights');
+    }
+  });
+
   const handleSave = () => {
     if (!topicTitle.trim()) {
       toast.error('Title is required');
@@ -133,6 +171,20 @@ export function TopicModal({ isOpen, onClose, topic, allTopics, allAssignments, 
             {value}
           </div>
         )}
+      </div>
+    );
+  };
+
+  const renderBulletList = (label: string, items?: string[]) => {
+    if (!items || items.length === 0) return null;
+    return (
+      <div style={{ marginBottom: '1.5rem' }}>
+        <div style={{ fontWeight: 700, color: colors.text, marginBottom: '0.5rem' }}>{label}</div>
+        <ul style={{ margin: 0, paddingLeft: '1.5rem', color: colors.text, lineHeight: 1.6 }}>
+          {items.map((item, i) => (
+            <li key={i} style={{ marginBottom: '0.25rem' }}>{item}</li>
+          ))}
+        </ul>
       </div>
     );
   };
@@ -214,13 +266,111 @@ export function TopicModal({ isOpen, onClose, topic, allTopics, allAssignments, 
             <div style={{ display: 'flex', flexWrap: 'wrap', flex: 1, overflowY: 'auto' }}>
               {/* Left Column - Main Details */}
               <div style={{ flex: '1 1 500px', padding: '1.5rem', borderRight: `1px solid ${colors.border}` }}>
-                {renderTextField('Description', <FileText size={18} />, description, setDescription)}
-                {renderTextField('Learning Objectives', <Target size={18} />, learningObjectives, setLearningObjectives)}
-                {renderTextField('Covered Concepts', <Lightbulb size={18} />, coveredConcepts, setCoveredConcepts)}
-                {renderTextField('Reading Materials', <BookOpen size={18} />, readingMaterials, setReadingMaterials)}
-                {renderTextField('Lab / Class Activities', <Activity size={18} />, labActivity, setLabActivity)}
-                {renderTextField('Deliverables', <Layout size={18} />, deliverables, setDeliverables)}
-                {renderTextField('Personal Notes', <Edit2 size={18} />, notes, setNotes, true)}
+                
+                {/* Extracted Syllabus Section */}
+                <div style={{ marginBottom: '2rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: colors.text, fontSize: '1.1rem', fontWeight: 800 }}>
+                    📄 Extracted from Uploaded Syllabus
+                  </div>
+                  
+                  {(!description && !learningObjectives && !coveredConcepts && !readingMaterials && !referencesText && !labActivity && !deliverables && !notes) && !isEditMode ? (
+                    <div style={{ color: colors.textMuted, fontStyle: 'italic', padding: '1rem', background: colors.surfaceAlt, borderRadius: '8px' }}>
+                      No detailed information was found in the uploaded syllabus.
+                    </div>
+                  ) : (
+                    <>
+                      {renderTextField('Description', <FileText size={18} />, description, setDescription)}
+                      {renderTextField('Learning Objectives', <Target size={18} />, learningObjectives, setLearningObjectives)}
+                      {renderTextField('Covered Concepts', <Lightbulb size={18} />, coveredConcepts, setCoveredConcepts)}
+                      {renderTextField('Reading Materials', <BookOpen size={18} />, readingMaterials, setReadingMaterials)}
+                      {renderTextField('Lab / Class Activities', <Activity size={18} />, labActivity, setLabActivity)}
+                      {renderTextField('Deliverables', <Layout size={18} />, deliverables, setDeliverables)}
+                      {renderTextField('Personal Notes', <Edit2 size={18} />, notes, setNotes, true)}
+                    </>
+                  )}
+                </div>
+
+                {/* AI Generated Overview Section */}
+                {!isEditMode && (
+                  <div style={{ background: 'rgba(30,123,69,0.03)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(30,123,69,0.1)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#1E7B45', fontSize: '1.1rem', fontWeight: 800 }}>
+                        🤖 AI Learning Assistant
+                      </div>
+                      <div style={{ display: 'flex', gap: '0.5rem' }}>
+                         <button 
+                           onClick={() => regenerateMutation.mutate()} 
+                           disabled={regenerateMutation.isPending}
+                           style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem', borderRadius: '6px', background: 'transparent', border: `1px solid ${colors.border}`, color: colors.text, cursor: regenerateMutation.isPending ? 'not-allowed' : 'pointer' }}
+                         >
+                           {regenerateMutation.isPending ? 'Regenerating...' : 'Regenerate AI'}
+                         </button>
+                         {(topic.ai_status === 'completed' || topic.ai_status === 'failed') && (
+                           <button 
+                             onClick={() => resetMutation.mutate()} 
+                             disabled={resetMutation.isPending}
+                             style={{ fontSize: '0.75rem', padding: '0.25rem 0.75rem', borderRadius: '6px', background: 'transparent', border: `1px solid ${colors.border}`, color: '#DC2626', cursor: resetMutation.isPending ? 'not-allowed' : 'pointer' }}
+                           >
+                             Reset AI
+                           </button>
+                         )}
+                      </div>
+                    </div>
+                    
+                    {topic.ai_status === 'failed' && (
+                      <div style={{ background: '#FEF2F2', padding: '1rem', borderRadius: '8px', border: '1px solid #FCA5A5', color: '#991B1B', marginBottom: '1rem' }}>
+                        AI learning guide could not be generated. You can still access the original syllabus information.
+                        <button onClick={() => regenerateMutation.mutate()} style={{ marginLeft: '1rem', padding: '0.25rem 0.75rem', background: '#DC2626', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Retry</button>
+                      </div>
+                    )}
+
+                    {(topic.ai_status === 'queued' || topic.ai_status === 'generating' || topic.ai_status === 'idle') && (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                        <div style={{ height: '20px', width: '40%', background: colors.border, borderRadius: '4px', animation: 'pulse 1.5s infinite' }}></div>
+                        <div style={{ height: '60px', width: '100%', background: colors.border, borderRadius: '4px', animation: 'pulse 1.5s infinite' }}></div>
+                        <div style={{ height: '40px', width: '60%', background: colors.border, borderRadius: '4px', animation: 'pulse 1.5s infinite' }}></div>
+                        <div style={{ color: colors.textMuted, fontSize: '0.9rem', fontStyle: 'italic', marginTop: '0.5rem' }}>Generating AI Learning Guide...</div>
+                      </div>
+                    )}
+
+                    {topic.ai_status === 'completed' && topic.ai_summary && (
+                      <>
+                        <div style={{ marginBottom: '1.5rem' }}>
+                          <div style={{ fontWeight: 700, color: colors.text, marginBottom: '0.5rem' }}>Topic Summary</div>
+                          <div style={{ color: colors.text, lineHeight: 1.6 }}>{topic.ai_summary}</div>
+                        </div>
+                        
+                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                          {topic.difficulty_level && (
+                             <div style={{ background: colors.surface, padding: '0.5rem 1rem', borderRadius: '8px', border: `1px solid ${colors.border}`, display: 'flex', flexDirection: 'column' }}>
+                               <span style={{ fontSize: '0.7rem', fontWeight: 700, color: colors.textMuted }}>DIFFICULTY LEVEL</span>
+                               <span style={{ fontWeight: 600, color: colors.text }}>{topic.difficulty_level}</span>
+                             </div>
+                          )}
+                          {topic.estimated_study_time && (
+                             <div style={{ background: colors.surface, padding: '0.5rem 1rem', borderRadius: '8px', border: `1px solid ${colors.border}`, display: 'flex', flexDirection: 'column' }}>
+                               <span style={{ fontSize: '0.7rem', fontWeight: 700, color: colors.textMuted }}>ESTIMATED STUDY TIME</span>
+                               <span style={{ fontWeight: 600, color: colors.text }}>{topic.estimated_study_time}</span>
+                             </div>
+                          )}
+                        </div>
+
+                        {renderBulletList('Key Concepts', topic.ai_key_concepts)}
+                        {renderBulletList('Learning Outcomes', topic.ai_learning_outcomes)}
+                        {renderBulletList('Recommended Practice', topic.ai_practice)}
+                        {renderBulletList('Study Tips', topic.ai_study_tips)}
+                        {renderBulletList('Common Mistakes', topic.ai_common_mistakes)}
+                        
+                        <div style={{ marginTop: '2rem', paddingTop: '1rem', borderTop: `1px dashed rgba(30,123,69,0.2)`, fontSize: '0.75rem', color: colors.textMuted, display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                          <span>Provider: {topic.ai_provider}</span>
+                          <span>Model: {topic.ai_model}</span>
+                          <span>Version: {topic.ai_version}</span>
+                          {topic.ai_generated_on && <span>Generated: {new Date(topic.ai_generated_on).toLocaleDateString()}</span>}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Right Column - Related Items & Navigation */}

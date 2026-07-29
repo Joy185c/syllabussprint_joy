@@ -24,6 +24,7 @@ create table if not exists public.courses (
   instructor text not null default '',
   credits integer not null default 3,
   description text not null default '',
+  course_subject text not null default '',
   created_at timestamptz not null default now()
 );
 
@@ -45,7 +46,24 @@ create table if not exists public.topics (
   suggested_study_hours text not null default '',
   notes text not null default '',
   edited_by_user boolean not null default false,
-  updated_at timestamptz not null default now()
+  updated_at timestamptz not null default now(),
+  ai_summary text not null default '',
+  ai_key_concepts text[] not null default '{}',
+  ai_learning_outcomes text[] not null default '{}',
+  ai_practice text[] not null default '{}',
+  ai_study_tips text[] not null default '{}',
+  ai_common_mistakes text[] not null default '{}',
+  estimated_study_time text not null default '',
+  difficulty_level text not null default '',
+  ai_status text not null default 'idle' check (ai_status in ('idle', 'queued', 'generating', 'completed', 'failed')),
+  ai_version text not null default 'v1.0',
+  prompt_version text not null default '',
+  topic_hash text not null default '',
+  ai_quality_score integer not null default 0,
+  ai_provider text not null default 'Groq',
+  ai_model text not null default '',
+  ai_generated_on timestamptz,
+  created_at timestamptz not null default now()
 );
 
 -- 4. Assignments

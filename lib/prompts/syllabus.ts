@@ -9,7 +9,7 @@ Extract the following fields:
 - instructor: Instructor's name
 - credits: Number of credits (as a number)
 - description: Short course description
-- assignments: Array of all assignments, projects, labs with { title, description, deadline (ISO date if possible), weight (percentage as number), type }
+- assignments: Array of all assignments, projects, labs with { title, description, deadline (ISO date if possible), weight (percentage as number), type }. For the "description", extract the FULL, verbatim description of the assignment from the text. Do not summarize, shorten, or truncate the assignment description. Capture all requirements and details mentioned.
 - exams: Array of all exams, quizzes, midterms, finals with { type, date (ISO date if possible), weight (percentage as number), topics }
 - topics: Array of weekly topics with { week (as number), topic, description, learning_objectives, covered_concepts, key_keywords, reading_materials, reference_books, class_activities, lab_activities, deliverables, suggested_study_hours, notes }. Extract as much rich text as possible for these fields. Format text using markdown if appropriate (e.g. lists).
 - weights: Grade breakdown as array of { category, percentage (as number) }

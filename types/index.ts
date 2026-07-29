@@ -55,6 +55,23 @@ export interface Topic {
   notes: string;
   edited_by_user?: boolean;
   updated_at?: string;
+  ai_summary?: string;
+  ai_key_concepts?: string[];
+  ai_learning_outcomes?: string[];
+  ai_practice?: string[];
+  ai_study_tips?: string[];
+  ai_common_mistakes?: string[];
+  estimated_study_time?: string;
+  difficulty_level?: string;
+  ai_status?: 'idle' | 'queued' | 'generating' | 'completed' | 'failed';
+  ai_version?: string;
+  prompt_version?: string;
+  topic_hash?: string;
+  ai_quality_score?: number;
+  ai_provider?: string;
+  ai_model?: string;
+  ai_generated_on?: string;
+  created_at?: string;
 }
 
 export interface KanbanCard {

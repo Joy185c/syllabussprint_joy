@@ -92,6 +92,16 @@ export default function UploadPage() {
       // Done
       setStatus('done');
       toast.success(`🎉 ${extractData.course_name} processed successfully!`);
+      
+      if (extractData.start_background_enrichment) {
+        // Fire and forget background enrichment
+        fetch('/api/topics/enrich-batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ course_id: extractData.course_id }),
+        }).catch(err => console.error('Background enrichment failed to start:', err));
+      }
+
       await new Promise((r) => setTimeout(r, 1200));
       router.push(`/course/${extractData.course_id}`);
     } catch (err) {

@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { NextRequest } from 'next/server';
 import { createServerClient } from '@/lib/supabase/server';
 import { extractSyllabusData } from '@/lib/ai/extract';
@@ -5,6 +6,11 @@ import { generateTimeline } from '@/lib/planner/timeline';
 import { generateKanbanCards } from '@/lib/planner/kanban';
 
 export const runtime = 'nodejs';
+
+function generateTopicHash(t: any): string {
+  const content = `${t.topic}|${t.description}|${t.learning_objectives}|${t.covered_concepts}`;
+  return crypto.createHash('sha256').update(content).digest('hex');
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -28,6 +34,9 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: 'Syllabus file not found' }, { status: 404 });
     }
 
+    // Attempt to guess course subject (very naive)
+    const courseSubject = syllabusFile.filename.split('.')[0] || 'General Education';
+
     // 2. AI extraction
     const extraction = await extractSyllabusData(syllabusFile.raw_text);
     if (!extraction.success || !extraction.data) {
@@ -48,6 +57,7 @@ export async function POST(request: NextRequest) {
         instructor: data.instructor,
         credits: data.credits,
         description: data.description,
+        course_subject: courseSubject // Store subject for AI context
       })
       .select('id')
       .single();
@@ -76,6 +86,13 @@ export async function POST(request: NextRequest) {
           deliverables: t.deliverables || '',
           suggested_study_hours: t.suggested_study_hours || '',
           notes: t.notes || '',
+          topic_hash: generateTopicHash(t),
+          ai_status: 'queued',
+          ai_version: 'v1.0',
+          prompt_version: 'topic-enrichment-v3',
+          ai_quality_score: 0,
+          ai_provider: 'Groq',
+          ai_model: 'llama3-70b-8192'
         }))
       );
     }
@@ -146,6 +163,7 @@ export async function POST(request: NextRequest) {
       topics_count: data.topics.length,
       timeline_count: timelineItems.length,
       kanban_count: kanbanCards.length,
+      start_background_enrichment: data.topics.length > 0,
     });
   } catch (err) {
     console.error('[Extract] Unexpected error:', err);
