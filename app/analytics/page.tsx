@@ -232,14 +232,14 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Section 10 & 7: AI Insights Panel & Recommendations */}
-      {(wa?.ai_insights?.insights?.length > 0 || wa?.ai_insights?.recommendations?.length > 0) && (
+      {((wa?.ai_insights?.insights?.length ?? 0) > 0 || (wa?.ai_insights?.recommendations?.length ?? 0) > 0) && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
           <div className="glass" style={{ padding: '1.5rem', borderRadius: '16px', border: '1px solid rgba(30,123,69,0.2)' }}>
             <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#1E7B45', fontWeight: 800, marginBottom: '1rem' }}>
               <BrainCircuit size={20} /> AI Global Insights
             </h3>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', margin: 0, padding: 0, listStyle: 'none' }}>
-              {wa.ai_insights.insights.map((insight, idx) => (
+              {wa?.ai_insights?.insights?.map((insight: string, idx: number) => (
                 <li key={idx} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', color: colors.text, fontSize: '0.95rem', lineHeight: 1.5 }}>
                   <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#80C242', marginTop: '8px', flexShrink: 0 }} />
                   {insight}
@@ -252,7 +252,7 @@ export default function AnalyticsPage() {
               <Target size={20} /> Actionable Recommendations
             </h3>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', margin: 0, padding: 0, listStyle: 'none' }}>
-              {wa.ai_insights.recommendations.map((rec, idx) => (
+              {wa?.ai_insights?.recommendations?.map((rec: string, idx: number) => (
                 <li key={idx} style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-start', color: colors.text, fontSize: '0.95rem', lineHeight: 1.5 }}>
                   <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#F59E0B', marginTop: '8px', flexShrink: 0 }} />
                   {rec}
