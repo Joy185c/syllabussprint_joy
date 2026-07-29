@@ -6,9 +6,10 @@ import { DndContext, closestCorners, KeyboardSensor, PointerSensor, useSensor, u
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { getWorkspaceId } from '@/lib/workspace';
 import { KanbanBoardColumn } from '@/components/kanban/column';
+import { TaskModal } from '@/components/kanban/task-modal';
 import type { KanbanCard } from '@/types';
 import { useColors } from '@/lib/useColors';
-import { Loader2, Search, X, Filter } from 'lucide-react';
+import { Loader2, Search, X, Filter, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const COLUMNS = [
@@ -21,6 +22,10 @@ export default function KanbanPage() {
   const [workspaceId, setWorkspaceId] = useState('');
   const queryClient = useQueryClient();
   const colors = useColors();
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<KanbanCard | null>(null);
 
   // Filters State
   const [isLoaded, setIsLoaded] = useState(false);
@@ -244,7 +249,16 @@ export default function KanbanPage() {
       {/* Header & Stats */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div className="page-header" style={{ marginBottom: 0 }}>
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: colors.text, marginBottom: '0.25rem' }}>Kanban Board</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: colors.text, marginBottom: '0.25rem' }}>Kanban Board</h1>
+            <button 
+              onClick={() => { setSelectedTask(null); setIsModalOpen(true); }}
+              className="btn-primary" 
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#1E7B45', padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+            >
+              <Plus size={16} /> Add Task
+            </button>
+          </div>
           <p style={{ color: colors.textMuted, fontSize: '0.9rem' }}>Drag and drop tasks to track your progress</p>
         </div>
         
@@ -409,12 +423,20 @@ export default function KanbanPage() {
                    color={col.color}
                    cards={columnCards}
                    onStatusChange={handleStatusChange}
+                   onCardClick={(card) => { setSelectedTask(card); setIsModalOpen(true); }}
                  />
                )
             })}
           </DndContext>
         </div>
       )}
+
+      <TaskModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        task={selectedTask}
+        workspaceId={workspaceId}
+      />
     </div>
   );
 }

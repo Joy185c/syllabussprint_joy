@@ -4,7 +4,7 @@ import type { KanbanCard } from '@/types';
 import { Calendar, AlertCircle, Clock } from 'lucide-react';
 import { useColors } from '@/lib/useColors';
 
-export function KanbanCardComponent({ card, onStatusChange }: { card: KanbanCard; onStatusChange?: (id: string, newStatus: string) => void }) {
+export function KanbanCardComponent({ card, onStatusChange, onClick }: { card: KanbanCard; onStatusChange?: (id: string, newStatus: string) => void; onClick?: (card: KanbanCard) => void }) {
   const colors = useColors();
   const {
     attributes,
@@ -42,6 +42,7 @@ export function KanbanCardComponent({ card, onStatusChange }: { card: KanbanCard
       {...attributes}
       {...listeners}
       className="glass-hover"
+      onClick={() => onClick && onClick(card)}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
         <h4 style={{ color: colors.text, fontWeight: 600, fontSize: '0.95rem', lineHeight: 1.3, margin: 0 }}>

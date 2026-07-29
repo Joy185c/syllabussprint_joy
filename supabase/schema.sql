@@ -33,8 +33,19 @@ create table if not exists public.topics (
   course_id uuid references public.courses(id) on delete cascade not null,
   week integer not null default 1,
   topic text not null,
-  reading text not null default '',
-  notes text not null default ''
+  description text not null default '',
+  learning_objectives text not null default '',
+  covered_concepts text not null default '',
+  key_keywords text not null default '',
+  reading_materials text not null default '',
+  reference_books text not null default '',
+  class_activities text not null default '',
+  lab_activities text not null default '',
+  deliverables text not null default '',
+  suggested_study_hours text not null default '',
+  notes text not null default '',
+  edited_by_user boolean not null default false,
+  updated_at timestamptz not null default now()
 );
 
 -- 4. Assignments
@@ -77,7 +88,12 @@ create table if not exists public.kanban_cards (
   status text not null default 'todo' check (status in ('todo','doing','done')),
   priority text not null default 'medium' check (priority in ('low','medium','high')),
   due_date timestamptz,
-  position integer not null default 0
+  position integer not null default 0,
+  type text not null default 'task',
+  notes text not null default '',
+  edited_by_user boolean not null default false,
+  updated_at timestamptz not null default now(),
+  source text not null default 'AI' check (source in ('AI', 'Manual'))
 );
 
 -- 8. Timeline Events
@@ -87,7 +103,8 @@ create table if not exists public.timeline (
   date timestamptz not null,
   title text not null,
   type text not null default 'task' check (type in ('assignment','exam','task','deadline')),
-  description text not null default ''
+  description text not null default '',
+  kanban_card_id uuid references public.kanban_cards(id) on delete cascade
 );
 
 -- =============================================

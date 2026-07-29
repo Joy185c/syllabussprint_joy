@@ -42,8 +42,19 @@ export interface Topic {
   course_id: string;
   week: number;
   topic: string;
-  reading: string;
+  description: string;
+  learning_objectives: string;
+  covered_concepts: string;
+  key_keywords: string;
+  reading_materials: string;
+  reference_books: string;
+  class_activities: string;
+  lab_activities: string;
+  deliverables: string;
+  suggested_study_hours: string;
   notes: string;
+  edited_by_user?: boolean;
+  updated_at?: string;
 }
 
 export interface KanbanCard {
@@ -56,6 +67,10 @@ export interface KanbanCard {
   due_date: string | null;
   position: number;
   type?: string;
+  notes?: string;
+  edited_by_user?: boolean;
+  updated_at?: string;
+  source?: 'AI' | 'Manual';
   courses?: {
     title: string;
     course_code: string;
@@ -72,6 +87,7 @@ export interface TimelineItem {
   title: string;
   type: 'assignment' | 'exam' | 'task' | 'deadline';
   description: string;
+  kanban_card_id?: string;
 }
 
 export interface SyllabusFile {

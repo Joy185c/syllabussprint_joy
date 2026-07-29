@@ -4,7 +4,7 @@ import { KanbanCardComponent } from './card';
 import type { KanbanCard } from '@/types';
 import { useColors } from '@/lib/useColors';
 
-export function KanbanBoardColumn({ id, title, color, cards, onStatusChange }: { id: string; title: string; color: string; cards: KanbanCard[]; onStatusChange?: (id: string, newStatus: string) => void }) {
+export function KanbanBoardColumn({ id, title, color, cards, onStatusChange, onCardClick }: { id: string; title: string; color: string; cards: KanbanCard[]; onStatusChange?: (id: string, newStatus: string) => void; onCardClick?: (card: KanbanCard) => void }) {
   const colors = useColors();
   const { setNodeRef } = useDroppable({ id });
 
@@ -23,7 +23,7 @@ export function KanbanBoardColumn({ id, title, color, cards, onStatusChange }: {
       <div ref={setNodeRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minHeight: '100px', flex: 1, overflowY: 'auto', paddingRight: '0.5rem', marginRight: '-0.5rem' }}>
         <SortableContext items={cards.map(c => c.id)} strategy={verticalListSortingStrategy}>
           {cards.map(card => (
-            <KanbanCardComponent key={card.id} card={card} onStatusChange={onStatusChange} />
+            <KanbanCardComponent key={card.id} card={card} onStatusChange={onStatusChange} onClick={onCardClick} />
           ))}
         </SortableContext>
         {cards.length === 0 && (

@@ -65,8 +65,17 @@ export async function POST(request: NextRequest) {
           course_id: courseId,
           week: t.week,
           topic: t.topic,
-          reading: t.reading,
-          notes: t.notes,
+          description: t.description || '',
+          learning_objectives: t.learning_objectives || '',
+          covered_concepts: t.covered_concepts || '',
+          key_keywords: t.key_keywords || '',
+          reading_materials: t.reading_materials || '',
+          reference_books: t.reference_books || '',
+          class_activities: t.class_activities || '',
+          lab_activities: t.lab_activities || '',
+          deliverables: t.deliverables || '',
+          suggested_study_hours: t.suggested_study_hours || '',
+          notes: t.notes || '',
         }))
       );
     }

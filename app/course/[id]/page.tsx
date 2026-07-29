@@ -4,13 +4,20 @@ import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getWorkspaceId } from '@/lib/workspace';
 import { use, Suspense } from 'react';
-import { BookOpen, User, Calendar as CalIcon, Clock, ChevronRight, FileText, CheckCircle, Circle, Target } from 'lucide-react';
-import type { Course } from '@/types';
+import { BookOpen, User, Calendar as CalIcon, Clock, ChevronRight, FileText, CheckCircle, Circle, Target, Search } from 'lucide-react';
+import type { Course, Topic } from '@/types';
 import { useColors } from '@/lib/useColors';
+import { TopicModal } from '@/components/course/topic-modal';
 
 function CourseContent({ id }: { id: string }) {
   const [workspaceId, setWorkspaceId] = useState('');
   const [activeTab, setActiveTab] = useState<'overview' | 'assignments' | 'topics'>('overview');
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Topic Modal State
+  const [isTopicModalOpen, setIsTopicModalOpen] = useState(false);
+  const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
+
   const colors = useColors();
 
   useEffect(() => {
@@ -43,6 +50,19 @@ function CourseContent({ id }: { id: string }) {
   const course = data.course;
   const assignments = course.assignments || [];
   const topics = course.topics || [];
+  
+  const filteredTopics = topics.filter((t: Topic) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      (t.topic || '').toLowerCase().includes(q) ||
+      (t.description || '').toLowerCase().includes(q) ||
+      (t.learning_objectives || '').toLowerCase().includes(q) ||
+      (t.covered_concepts || '').toLowerCase().includes(q) ||
+      (t.reading_materials || '').toLowerCase().includes(q) ||
+      (t.notes || '').toLowerCase().includes(q)
+    );
+  });
 
   return (
     <div className="container" style={{ padding: '2rem 1.5rem' }}>
@@ -138,18 +158,53 @@ function CourseContent({ id }: { id: string }) {
 
         {activeTab === 'topics' && (
           <div>
-            {topics.length === 0 ? <p style={{ color: colors.textMuted }}>No topics extracted.</p> : (
+            <div style={{ marginBottom: '1.5rem', position: 'relative' }}>
+              <Search size={18} color={colors.textMuted} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+              <input 
+                type="text" 
+                placeholder="Search topics, description, concepts..."
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{ width: '100%', padding: '0.75rem 1rem 0.75rem 2.75rem', borderRadius: '8px', border: `1px solid ${colors.border}`, background: colors.surfaceAlt, color: colors.text, outline: 'none' }}
+              />
+            </div>
+            
+            {filteredTopics.length === 0 ? <p style={{ color: colors.textMuted }}>No topics found.</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {topics.map(t => (
-                  <div key={t.id} style={{ padding: '1rem', background: colors.surfaceAlt, borderRadius: '10px', border: `1px solid ${colors.border}` }}>
-                    <div style={{ color: '#1E7B45', fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.25rem' }}>WEEK {t.week}</div>
-                    <div style={{ color: colors.text, fontWeight: 600, fontSize: '1.05rem', marginBottom: '0.5rem' }}>{t.topic}</div>
-                    {t.reading && (
-                      <div style={{ display: 'flex', gap: '0.5rem', color: colors.textMuted, fontSize: '0.9rem', marginTop: '0.5rem' }}>
-                         <BookOpen size={16} color={colors.textSubtle} style={{ flexShrink: 0, marginTop: '2px' }} />
-                         <span>{t.reading}</span>
+                {filteredTopics.map((t: Topic) => (
+                  <div 
+                    key={t.id} 
+                    onClick={() => { setSelectedTopic(t); setIsTopicModalOpen(true); }}
+                    style={{ padding: '1.5rem', background: colors.surfaceAlt, borderRadius: '12px', border: `1px solid ${colors.border}`, cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}
+                    onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                    onMouseLeave={(e) => e.currentTarget.style.transform = 'none'}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <div style={{ color: '#1E7B45', fontSize: '0.8rem', fontWeight: 700, marginBottom: '0.5rem', display: 'inline-block', padding: '4px 8px', background: 'rgba(30,123,69,0.1)', borderRadius: '100px' }}>WEEK {t.week}</div>
+                        <div style={{ color: colors.text, fontWeight: 700, fontSize: '1.25rem', marginBottom: '0.5rem' }}>{t.topic}</div>
+                        {t.description && <p style={{ color: colors.textMuted, fontSize: '0.9rem', marginBottom: '1rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{t.description}</p>}
+                        
+                        <div style={{ display: 'flex', gap: '1.5rem', color: colors.textSubtle, fontSize: '0.85rem' }}>
+                          {t.reading_materials && (
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <BookOpen size={14} /> Reading
+                            </span>
+                          )}
+                          {t.learning_objectives && (
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <Target size={14} /> Objectives
+                            </span>
+                          )}
+                          {(t.notes || t.edited_by_user) && (
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                              <FileText size={14} /> Notes
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    )}
+                      <ChevronRight color={colors.border} />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -157,6 +212,16 @@ function CourseContent({ id }: { id: string }) {
           </div>
         )}
       </div>
+
+      <TopicModal 
+        isOpen={isTopicModalOpen}
+        onClose={() => setIsTopicModalOpen(false)}
+        topic={selectedTopic}
+        allTopics={topics}
+        allAssignments={assignments}
+        allExams={course.exams || []}
+        onNavigate={(topic) => setSelectedTopic(topic)}
+      />
     </div>
   );
 }

@@ -21,7 +21,16 @@ export const ExamSchema = z.object({
 export const TopicSchema = z.object({
   week: z.number().optional().default(0),
   topic: z.string(),
-  reading: z.string().optional().default(''),
+  description: z.string().optional().default(''),
+  learning_objectives: z.string().optional().default(''),
+  covered_concepts: z.string().optional().default(''),
+  key_keywords: z.string().optional().default(''),
+  reading_materials: z.string().optional().default(''),
+  reference_books: z.string().optional().default(''),
+  class_activities: z.string().optional().default(''),
+  lab_activities: z.string().optional().default(''),
+  deliverables: z.string().optional().default(''),
+  suggested_study_hours: z.string().optional().default(''),
   notes: z.string().optional().default(''),
 });
 

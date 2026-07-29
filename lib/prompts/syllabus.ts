@@ -11,7 +11,7 @@ Extract the following fields:
 - description: Short course description
 - assignments: Array of all assignments, projects, labs with { title, description, deadline (ISO date if possible), weight (percentage as number), type }
 - exams: Array of all exams, quizzes, midterms, finals with { type, date (ISO date if possible), weight (percentage as number), topics }
-- topics: Array of weekly topics with { week (as number), topic, reading, notes }
+- topics: Array of weekly topics with { week (as number), topic, description, learning_objectives, covered_concepts, key_keywords, reading_materials, reference_books, class_activities, lab_activities, deliverables, suggested_study_hours, notes }. Extract as much rich text as possible for these fields. Format text using markdown if appropriate (e.g. lists).
 - weights: Grade breakdown as array of { category, percentage (as number) }
 - submission_rules: Any submission or late policy rules
 - office_hours: Instructor office hours info
@@ -38,7 +38,7 @@ Example structure:
     { "type": "midterm", "date": "2024-10-15", "weight": 30, "topics": ["Arrays", "Loops"] }
   ],
   "topics": [
-    { "week": 1, "topic": "Introduction", "reading": "Chapter 1", "notes": "" }
+    { "week": 1, "topic": "Introduction", "description": "Intro to DB", "reading_materials": "Chapter 1", "notes": "" }
   ],
   "weights": [
     { "category": "Assignments", "percentage": 40 }
