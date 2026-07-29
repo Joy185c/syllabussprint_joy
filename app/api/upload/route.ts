@@ -9,6 +9,15 @@ const ALLOWED_TYPES = [
   'text/markdown',
   'text/plain',
   'text/x-markdown',
+  'text/csv',
+  'application/json',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'image/jpeg',
+  'image/png',
+  'image/webp'
 ];
 
 export const runtime = 'nodejs';
@@ -28,8 +37,8 @@ export async function POST(request: NextRequest) {
     if (file.size > MAX_FILE_SIZE) {
       return Response.json({ error: 'File too large. Max 20MB.' }, { status: 413 });
     }
-    if (!ALLOWED_TYPES.includes(file.type) && !file.name.match(/\.(pdf|md|markdown|txt)$/i)) {
-      return Response.json({ error: 'Invalid file type. Upload PDF, Markdown, or TXT.' }, { status: 415 });
+    if (!ALLOWED_TYPES.includes(file.type) && !file.name.match(/\.(pdf|md|markdown|txt|csv|json|doc|docx|ppt|pptx|jpg|jpeg|png|webp)$/i)) {
+      return Response.json({ error: 'Unsupported file format. Please upload a supported document or image.' }, { status: 415 });
     }
 
     const supabase = createServerClient();

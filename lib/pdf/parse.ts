@@ -1,4 +1,38 @@
 // PDF text extraction — server-side only, with full debug logging
+import { parseOffice } from 'officeparser';
+import Tesseract from 'tesseract.js';
+
+export async function extractTextFromOffice(buffer: Buffer, ext: string): Promise<string> {
+  console.log(`[OfficeParser] ====== START OFFICE EXTRACTION ======`);
+  console.log(`[OfficeParser] Extension: ${ext}, Buffer length: ${buffer.length}`);
+  const startTime = Date.now();
+  try {
+     const ast = await parseOffice(buffer);
+     const text = ast.toText();
+     console.log(`[OfficeParser] Extracted ${text.length} chars in ${Date.now() - startTime}ms`);
+     if (!text || text.trim().length === 0) throw new Error('Empty text returned');
+     return text;
+  } catch (err) {
+     console.error(`[OfficeParser] Extraction failed:`, err);
+     if (ext === 'doc') {
+       throw new Error('Legacy DOC format detected. Please save as DOCX and try again.');
+     }
+     throw new Error(`Failed to parse ${ext?.toUpperCase() || 'document'} file. Please check the file format.`);
+  }
+}
+
+export async function extractTextFromImage(buffer: Buffer, ext: string): Promise<string> {
+  console.log(`[OCR] ====== START IMAGE OCR ======`);
+  const startTime = Date.now();
+  try {
+     const { data: { text } } = await Tesseract.recognize(buffer, 'eng');
+     console.log(`[OCR] Extracted ${text.length} chars in ${Date.now() - startTime}ms`);
+     return text;
+  } catch (err) {
+     console.error(`[OCR] Failed:`, err);
+     throw new Error('Failed to extract text from image.');
+  }
+}
 
 export async function extractTextFromPDF(buffer: Buffer): Promise<string> {
   console.log('[PDF] ====== START PDF EXTRACTION ======');
@@ -133,12 +167,20 @@ export async function extractText(
     return extractTextFromPDF(buffer);
   }
 
+  if (['doc', 'docx', 'ppt', 'pptx'].includes(ext || '')) {
+    return extractTextFromOffice(buffer, ext || '');
+  }
+
+  if (['jpg', 'jpeg', 'png', 'webp'].includes(ext || '') || mimeType.startsWith('image/')) {
+    return extractTextFromImage(buffer, ext || '');
+  }
+
+  // Treat as plain text (txt, csv, json, md)
   const textContent = buffer.toString('utf-8');
 
   if (ext === 'md' || ext === 'markdown') {
     return extractTextFromMarkdown(textContent);
   }
 
-  // Plain text
   return textContent;
 }

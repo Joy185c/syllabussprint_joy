@@ -27,7 +27,7 @@ export default function UploadPage() {
   const onDrop = useCallback((accepted: File[], rejected: any[]) => {
     setError(null);
     if (rejected.length > 0) {
-      setError('Invalid file type or size. Please upload a PDF, Markdown, or TXT file under 20MB.');
+      setError('Invalid file type or size. Please upload a supported document or image under 20MB.');
       return;
     }
     if (accepted.length > 0) setFile(accepted[0]);
@@ -35,7 +35,19 @@ export default function UploadPage() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'application/pdf': ['.pdf'], 'text/markdown': ['.md', '.markdown'], 'text/plain': ['.txt'] },
+    accept: { 
+      'application/pdf': ['.pdf'], 
+      'text/markdown': ['.md', '.markdown'], 
+      'text/plain': ['.txt', '.csv'], 
+      'application/json': ['.json'],
+      'application/msword': ['.doc'], 
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
+      'application/vnd.ms-powerpoint': ['.ppt'],
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png'],
+      'image/webp': ['.webp']
+    },
     maxSize: MAX_SIZE,
     multiple: false,
   });
@@ -107,7 +119,7 @@ export default function UploadPage() {
           <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.5rem' }}>
             Upload Your <span className="gradient-text">Syllabus</span>
           </h1>
-          <p style={{ color: '#4B5563' }}>PDF, Markdown, or TXT — our AI handles the rest</p>
+          <p style={{ color: '#4B5563' }}>PDF, DOCX, PPTX, Images, CSV, MD, or TXT — our AI handles the rest</p>
         </motion.div>
 
         {/* Drop Zone */}
@@ -144,7 +156,7 @@ export default function UploadPage() {
                   Drag & drop your syllabus here
                 </p>
                 <p style={{ color: '#4B5563', fontSize: '0.875rem' }}>or click to browse files</p>
-                <p style={{ color: '#6B7280', fontSize: '0.8rem', marginTop: '0.75rem' }}>PDF, MD, TXT · Max 20MB</p>
+                <p style={{ color: '#6B7280', fontSize: '0.8rem', marginTop: '0.75rem' }}>Supported: PDF, DOC/X, PPT/X, CSV, TXT, MD, Images · Max 20MB</p>
               </div>
 
               {/* Selected file */}
