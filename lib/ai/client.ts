@@ -2,10 +2,16 @@ import Groq from 'groq-sdk';
 import { AI_CONFIG } from '@/lib/config';
 
 // 1. Discover all Groq API keys from environment variables
-const keys = Object.keys(process.env)
-  .filter(key => key.startsWith('GROQ_API_KEY'))
-  .map(key => process.env[key])
-  .filter(Boolean) as string[];
+// Explicitly list them since Next.js bundlers often break dynamic process.env iteration
+const keys = [
+  process.env.GROQ_API_KEY_1,
+  process.env.GROQ_API_KEY_2,
+  process.env.GROQ_API_KEY_3,
+  process.env.GROQ_API_KEY_4,
+  process.env.GROQ_API_KEY_5,
+  process.env.GROQ_API_KEY_6,
+  process.env.GROQ_API_KEY, // fallback
+].filter(Boolean) as string[];
 
 if (keys.length === 0) {
   // Graceful fallback during build step if env variables aren't loaded yet
