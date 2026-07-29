@@ -103,6 +103,27 @@ export default function KanbanPage() {
     }
   };
 
+  const handleStatusChange = (activeId: string, newStatus: string) => {
+    const activeCard = cards.find(c => c.id === activeId);
+    if (!activeCard) return;
+
+    const columnCards = cards.filter(c => c.status === newStatus);
+    const newPosition = columnCards.length;
+
+    queryClient.setQueryData(['kanban', workspaceId], (oldData: any) => {
+      if (!oldData) return oldData;
+      const newCards = oldData.cards.map((c: KanbanCard) => {
+        if (c.id === activeId) {
+          return { ...c, status: newStatus, position: newPosition };
+        }
+        return c;
+      });
+      return { cards: newCards };
+    });
+
+    updateCardStatus.mutate({ id: activeId, status: newStatus, position: newPosition });
+  };
+
   if (isLoading) return (
     <div className="container" style={{ padding: '2rem', display: 'flex', justifyContent: 'center' }}>
       <Loader2 size={32} color="#1E7B45" style={{ animation: 'spin 1s linear infinite' }} />
@@ -125,6 +146,7 @@ export default function KanbanPage() {
                title={col.title}
                color={col.color}
                cards={cards.filter(c => c.status === col.id).sort((a,b) => a.position - b.position)}
+               onStatusChange={handleStatusChange}
              />
           ))}
         </DndContext>

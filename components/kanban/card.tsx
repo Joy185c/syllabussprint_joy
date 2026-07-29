@@ -4,7 +4,7 @@ import type { KanbanCard } from '@/types';
 import { Calendar, AlertCircle, Clock } from 'lucide-react';
 import { useColors } from '@/lib/useColors';
 
-export function KanbanCardComponent({ card }: { card: KanbanCard }) {
+export function KanbanCardComponent({ card, onStatusChange }: { card: KanbanCard; onStatusChange?: (id: string, newStatus: string) => void }) {
   const colors = useColors();
   const {
     attributes,
@@ -59,7 +59,7 @@ export function KanbanCardComponent({ card }: { card: KanbanCard }) {
       )}
 
       {card.due_date && (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.75rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.75rem', marginBottom: onStatusChange ? '1rem' : 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', color: daysUntil && daysUntil <= 3 ? '#DC2626' : colors.textSubtle }}>
             {daysUntil && daysUntil <= 3 ? <AlertCircle size={12} /> : <Calendar size={12} />}
             {new Date(card.due_date).toLocaleDateString()}
@@ -74,6 +74,52 @@ export function KanbanCardComponent({ card }: { card: KanbanCard }) {
               <Clock size={10} />
               {daysUntil === 0 ? 'Due Today' : daysUntil < 0 ? 'Overdue' : `${daysUntil} Days Left`}
             </div>
+          )}
+        </div>
+      )}
+      
+      {!card.due_date && onStatusChange && <div style={{ height: '1rem' }} />}
+
+      {onStatusChange && (
+        <div
+          style={{ display: 'flex', gap: '0.5rem', borderTop: `1px solid ${colors.border}`, paddingTop: '0.75rem', marginTop: card.due_date ? 0 : '0.5rem' }}
+          onPointerDown={(e) => e.stopPropagation()} // Prevent dnd-kit from intercepting button clicks
+        >
+          {card.status === 'todo' && (
+            <button
+              onClick={() => onStatusChange(card.id, 'doing')}
+              style={{ flex: 1, padding: '0.4rem', fontSize: '0.75rem', fontWeight: 600, borderRadius: '6px', border: 'none', background: '#F59E0B', color: '#FFF', cursor: 'pointer', transition: 'opacity 0.2s' }}
+              className="hover:opacity-90"
+            >
+              Start Progress
+            </button>
+          )}
+          {card.status === 'doing' && (
+            <>
+              <button
+                onClick={() => onStatusChange(card.id, 'todo')}
+                style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem', fontWeight: 600, borderRadius: '6px', border: `1px solid ${colors.border}`, background: 'transparent', color: colors.textMuted, cursor: 'pointer', transition: 'background 0.2s' }}
+                className="hover:bg-black/5 dark:hover:bg-white/5"
+              >
+                Undo
+              </button>
+              <button
+                onClick={() => onStatusChange(card.id, 'done')}
+                style={{ flex: 1, padding: '0.4rem', fontSize: '0.75rem', fontWeight: 600, borderRadius: '6px', border: 'none', background: '#16A34A', color: '#FFF', cursor: 'pointer', transition: 'opacity 0.2s' }}
+                className="hover:opacity-90"
+              >
+                Complete
+              </button>
+            </>
+          )}
+          {card.status === 'done' && (
+            <button
+              onClick={() => onStatusChange(card.id, 'doing')}
+              style={{ flex: 1, padding: '0.4rem', fontSize: '0.75rem', fontWeight: 600, borderRadius: '6px', border: `1px solid ${colors.border}`, background: 'transparent', color: colors.textMuted, cursor: 'pointer', transition: 'background 0.2s' }}
+              className="hover:bg-black/5 dark:hover:bg-white/5"
+            >
+              Undo (Move to Progress)
+            </button>
           )}
         </div>
       )}
