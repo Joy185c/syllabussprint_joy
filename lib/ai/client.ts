@@ -22,6 +22,8 @@ if (keys.length === 0) {
   }
 }
 
+console.log(`[Groq Manager] Successfully loaded ${keys.length} API keys from environment.`);
+
 // 2. Instantiate a pool of Groq clients (one for each key)
 const clients = keys.map(apiKey => new Groq({
   apiKey,
