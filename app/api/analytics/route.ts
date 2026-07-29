@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     ]);
 
     // Let's re-fetch kanban_cards properly
-    let cards = [];
+    let cards: any[] = [];
     if (courses && courses.length > 0) {
       const courseIds = courses.map(c => c.id);
       const { data: kcData } = await supabase
