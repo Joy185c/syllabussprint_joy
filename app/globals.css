@@ -38,6 +38,79 @@
   --glow: 0 8px 24px rgba(15, 76, 58, 0.08);
 }
 
+/* ── Dark Mode ──────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0D1117;
+  --surface: #161B22;
+  --surface-2: #21262D;
+  --border: #30363D;
+  --text: #E6EDF3;
+  --text-muted: #8B949E;
+  --glow: 0 8px 24px rgba(128, 194, 66, 0.08);
+}
+
+[data-theme="dark"] body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+[data-theme="dark"] .glass {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"] .glass-hover:hover {
+  box-shadow: 0 8px 24px rgba(128, 194, 66, 0.12) !important;
+}
+
+[data-theme="dark"] .kanban-col {
+  background: var(--surface-2) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .stat-card {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .page-header {
+  border-bottom-color: var(--border);
+}
+
+[data-theme="dark"] .input {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+[data-theme="dark"] .progress-bar {
+  background: var(--border);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track { background: var(--bg); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #4B5563; border-color: var(--bg); }
+
+/* dark navbar */
+[data-theme="dark"] nav {
+  background: rgba(22, 27, 34, 0.92) !important;
+  border-bottom-color: var(--border) !important;
+}
+
+/* dark FC calendar */
+[data-theme="dark"] .fc {
+  --fc-border-color: #30363D;
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: #161B22;
+  color: #E6EDF3;
+}
+[data-theme="dark"] .fc .fc-daygrid-day-number,
+[data-theme="dark"] .fc .fc-col-header-cell-cushion,
+[data-theme="dark"] .fc .fc-toolbar-title { color: #E6EDF3; }
+[data-theme="dark"] .fc-theme-standard td,
+[data-theme="dark"] .fc-theme-standard th { border-color: #30363D; }
+
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
