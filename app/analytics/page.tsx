@@ -339,15 +339,33 @@ export default function AnalyticsPage() {
 
       {/* Section 4: Deadline Heatmap */}
       <div className="glass" style={{ padding: '1.5rem', borderRadius: '16px', overflowX: 'auto' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: colors.text, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <CalIcon size={18} color="#1E7B45" /> Deadline Heatmap (Intensity)
-        </h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: colors.text, marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <CalIcon size={18} color="#1E7B45" /> Deadline Heatmap (Intensity)
+            </h3>
+            <p style={{ color: colors.textMuted, fontSize: '0.85rem', margin: 0 }}>
+              Visualizes your upcoming workload. Darker red indicates crunch days with multiple assignments or exams due.
+            </p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: colors.textMuted }}>
+            <span>Less</span>
+            <div style={{ display: 'flex', gap: '3px' }}>
+              <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: getHeatmapColor(0), border: `1px solid ${colors.border}` }} title="No Deadlines" />
+              <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: getHeatmapColor(1), border: `1px solid ${colors.border}` }} title="Low Intensity" />
+              <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: getHeatmapColor(2), border: `1px solid ${colors.border}` }} title="Medium Intensity" />
+              <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: getHeatmapColor(3), border: `1px solid ${colors.border}` }} title="High Intensity" />
+              <div style={{ width: '12px', height: '12px', borderRadius: '2px', background: getHeatmapColor(4), border: `1px solid ${colors.border}` }} title="Critical Intensity" />
+            </div>
+            <span>More</span>
+          </div>
+        </div>
         <div style={{ minWidth: '800px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(26, 1fr)', gap: '4px', gridAutoFlow: 'row', gridTemplateRows: 'repeat(7, 1fr)' }}>
             {Object.keys(heatmapData).slice(0, 26 * 7).map(date => (
               <div 
                 key={date} 
-                title={`${date}: Intensity ${heatmapData[date]}`}
+                title={`${new Date(date).toLocaleDateString()}: Workload Intensity ${heatmapData[date]}`}
                 style={{
                   width: '100%', aspectRatio: '1', borderRadius: '4px',
                   background: getHeatmapColor(heatmapData[date]),
