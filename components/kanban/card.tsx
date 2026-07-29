@@ -1,7 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import type { KanbanCard } from '@/types';
-import { Calendar, AlertCircle } from 'lucide-react';
+import { Calendar, AlertCircle, Clock } from 'lucide-react';
 import { useColors } from '@/lib/useColors';
 
 export function KanbanCardComponent({ card }: { card: KanbanCard }) {
@@ -59,10 +59,22 @@ export function KanbanCardComponent({ card }: { card: KanbanCard }) {
       )}
 
       {card.due_date && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.75rem', fontSize: '0.75rem', color: daysUntil && daysUntil <= 3 ? '#DC2626' : colors.textSubtle }}>
-           {daysUntil && daysUntil <= 3 ? <AlertCircle size={12} /> : <Calendar size={12} />}
-           {new Date(card.due_date).toLocaleDateString()} 
-           {daysUntil !== null && ` (${daysUntil === 0 ? 'Today' : daysUntil < 0 ? 'Overdue' : `${daysUntil}d left`})`}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.75rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', color: daysUntil && daysUntil <= 3 ? '#DC2626' : colors.textSubtle }}>
+            {daysUntil && daysUntil <= 3 ? <AlertCircle size={12} /> : <Calendar size={12} />}
+            {new Date(card.due_date).toLocaleDateString()}
+          </div>
+          {daysUntil !== null && (
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '0.3rem',
+              padding: '2px 8px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 600,
+              background: daysUntil <= 3 ? 'rgba(220,38,38,0.1)' : daysUntil <= 7 ? 'rgba(245,158,11,0.1)' : 'rgba(30,123,69,0.1)',
+              color: daysUntil <= 3 ? '#DC2626' : daysUntil <= 7 ? '#D97706' : '#1E7B45'
+            }}>
+              <Clock size={10} />
+              {daysUntil === 0 ? 'Due Today' : daysUntil < 0 ? 'Overdue' : `${daysUntil} Days Left`}
+            </div>
+          )}
         </div>
       )}
     </div>
