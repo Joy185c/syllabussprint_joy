@@ -20,7 +20,7 @@ export function KanbanBoardColumn({ id, title, color, cards }: { id: string; tit
         </span>
       </div>
 
-      <div ref={setNodeRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minHeight: '100px' }}>
+      <div ref={setNodeRef} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minHeight: '100px', flex: 1, overflowY: 'auto', paddingRight: '0.5rem', marginRight: '-0.5rem' }}>
         <SortableContext items={cards.map(c => c.id)} strategy={verticalListSortingStrategy}>
           {cards.map(card => (
             <KanbanCardComponent key={card.id} card={card} />
