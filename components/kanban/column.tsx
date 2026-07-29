@@ -9,11 +9,11 @@ export function KanbanBoardColumn({ id, title, color, cards }: { id: string; tit
   return (
     <div className="kanban-col">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-        <h3 style={{ color: '#e0e7ff', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+        <h3 style={{ color: '#0F172A', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: color }} />
           {title}
         </h3>
-        <span style={{ background: 'rgba(99,102,241,0.1)', color: '#a5b4fc', fontSize: '0.75rem', padding: '2px 8px', borderRadius: '100px', fontWeight: 600 }}>
+        <span style={{ background: 'rgba(30,123,69,0.1)', color: '#1E7B45', fontSize: '0.75rem', padding: '2px 8px', borderRadius: '100px', fontWeight: 600 }}>
           {cards.length}
         </span>
       </div>
@@ -25,7 +25,7 @@ export function KanbanBoardColumn({ id, title, color, cards }: { id: string; tit
           ))}
         </SortableContext>
         {cards.length === 0 && (
-          <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#6b7280', fontSize: '0.85rem', border: '1px dashed rgba(99,102,241,0.2)', borderRadius: '12px' }}>
+          <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#9CA3AF', fontSize: '0.85rem', border: '1px dashed #E5E7EB', borderRadius: '12px' }}>
             Drop cards here
           </div>
         )}

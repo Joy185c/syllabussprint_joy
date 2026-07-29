@@ -44,18 +44,18 @@ export default function CalendarWrapper({ events }: { events: any[] }) {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="relative w-full max-w-md overflow-hidden bg-[#0f172a]/90 border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl"
+              className="relative w-full max-w-md overflow-hidden bg-white/95 border border-slate-200 rounded-2xl shadow-2xl backdrop-blur-xl"
             >
               {/* Header with dynamic color line */}
               <div 
                 className="h-2 w-full" 
-                style={{ backgroundColor: selectedEvent.color || '#4f46e5' }} 
+                style={{ backgroundColor: selectedEvent.color || '#1E7B45' }} 
               />
               
               <div className="p-6">
                 <button
                   onClick={() => setSelectedEvent(null)}
-                  className="absolute top-6 right-6 p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-full transition-colors"
+                  className="absolute top-6 right-6 p-1.5 text-slate-500 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors"
                 >
                   <X size={20} />
                 </button>
@@ -68,28 +68,28 @@ export default function CalendarWrapper({ events }: { events: any[] }) {
                        }}>
                     {selectedEvent.type || 'Event'}
                   </div>
-                  <h2 className="text-2xl font-bold text-white leading-tight">
+                  <h2 className="text-2xl font-bold text-slate-900 leading-tight">
                     {selectedEvent.title}
                   </h2>
                 </div>
 
                 <div className="space-y-4">
                   {selectedEvent.course && (
-                    <div className="flex items-start gap-3 text-slate-300">
-                      <BookOpen size={18} className="mt-0.5 text-slate-400" />
+                    <div className="flex items-start gap-3 text-slate-600">
+                      <BookOpen size={18} className="mt-0.5 text-slate-500" />
                       <div>
                         <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Course</p>
-                        <p className="font-medium text-slate-200">{selectedEvent.course}</p>
+                        <p className="font-medium text-slate-800">{selectedEvent.course}</p>
                       </div>
                     </div>
                   )}
 
                   {selectedEvent.date && (
-                    <div className="flex items-start gap-3 text-slate-300">
-                      <Calendar size={18} className="mt-0.5 text-slate-400" />
+                    <div className="flex items-start gap-3 text-slate-600">
+                      <Calendar size={18} className="mt-0.5 text-slate-500" />
                       <div>
                         <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Date</p>
-                        <p className="font-medium text-slate-200">
+                        <p className="font-medium text-slate-800">
                           {new Date(selectedEvent.date).toLocaleDateString('en-US', {
                             weekday: 'long',
                             month: 'long',
@@ -101,11 +101,11 @@ export default function CalendarWrapper({ events }: { events: any[] }) {
                   )}
 
                   {selectedEvent.description && (
-                    <div className="flex items-start gap-3 text-slate-300">
-                      <AlignLeft size={18} className="mt-0.5 text-slate-400" />
+                    <div className="flex items-start gap-3 text-slate-600">
+                      <AlignLeft size={18} className="mt-0.5 text-slate-500" />
                       <div>
                         <p className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mb-0.5">Details</p>
-                        <p className="text-sm text-slate-300 leading-relaxed">{selectedEvent.description}</p>
+                        <p className="text-sm text-slate-700 leading-relaxed">{selectedEvent.description}</p>
                       </div>
                     </div>
                   )}
@@ -114,7 +114,7 @@ export default function CalendarWrapper({ events }: { events: any[] }) {
                 <div className="mt-8">
                   <button 
                     onClick={() => setSelectedEvent(null)}
-                    className="w-full py-2.5 px-4 bg-white/5 hover:bg-white/10 text-white font-medium rounded-xl border border-white/10 transition-all active:scale-[0.98]"
+                    className="w-full py-2.5 px-4 bg-slate-50 hover:bg-slate-100 text-slate-700 font-medium rounded-xl border border-slate-200 transition-all active:scale-[0.98]"
                   >
                     Close
                   </button>

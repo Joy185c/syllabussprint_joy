@@ -11,9 +11,9 @@ import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const COLUMNS = [
-  { id: 'todo', title: 'To Do', color: '#6366f1' },
-  { id: 'doing', title: 'In Progress', color: '#f59e0b' },
-  { id: 'done', title: 'Done', color: '#10b981' },
+  { id: 'todo', title: 'To Do', color: '#0F4C3A' },
+  { id: 'doing', title: 'In Progress', color: '#F59E0B' },
+  { id: 'done', title: 'Done', color: '#16A34A' },
 ] as const;
 
 export default function KanbanPage() {
@@ -103,15 +103,15 @@ export default function KanbanPage() {
 
   if (isLoading) return (
     <div className="container" style={{ padding: '2rem', display: 'flex', justifyContent: 'center' }}>
-      <Loader2 size={32} color="#818cf8" style={{ animation: 'spin 1s linear infinite' }} />
+      <Loader2 size={32} color="#1E7B45" style={{ animation: 'spin 1s linear infinite' }} />
     </div>
   );
 
   return (
     <div className="container" style={{ padding: '2rem 1.5rem', height: 'calc(100vh - 64px)', display: 'flex', flexDirection: 'column' }}>
       <div className="page-header">
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#e0e7ff', marginBottom: '0.25rem' }}>Kanban Board</h1>
-        <p style={{ color: '#9ca3af', fontSize: '0.9rem' }}>Drag and drop tasks to track your progress</p>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>Kanban Board</h1>
+        <p style={{ color: '#4B5563', fontSize: '0.9rem' }}>Drag and drop tasks to track your progress</p>
       </div>
 
       <div style={{ display: 'flex', gap: '1.5rem', flex: 1, overflowX: 'auto', paddingBottom: '1rem' }}>

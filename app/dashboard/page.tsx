@@ -30,10 +30,10 @@ function StatCard({ icon: Icon, label, value, color, href }: {
         }}>
           <Icon size={18} color={color} />
         </div>
-        {href && <ArrowRight size={14} color="#6b7280" />}
+        {href && <ArrowRight size={14} color="#6B7280" />}
       </div>
-      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#e0e7ff', lineHeight: 1 }}>{value}</div>
-      <div style={{ color: '#9ca3af', fontSize: '0.85rem', marginTop: '0.25rem' }}>{label}</div>
+      <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0F172A', lineHeight: 1 }}>{value}</div>
+      <div style={{ color: '#4B5563', fontSize: '0.85rem', marginTop: '0.25rem' }}>{label}</div>
     </motion.div>
   );
   return href ? <Link href={href} style={{ textDecoration: 'none' }}>{content}</Link> : content;
@@ -93,9 +93,9 @@ export default function DashboardPage() {
     return (
       <div className="container" style={{ padding: '4rem 1.5rem', textAlign: 'center' }}>
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass" style={{ maxWidth: '480px', margin: '0 auto', padding: '3rem 2rem' }}>
-          <BookOpen size={48} color="#818cf8" style={{ margin: '0 auto 1rem' }} />
-          <h2 style={{ color: '#e0e7ff', fontWeight: 700, fontSize: '1.5rem', marginBottom: '0.75rem' }}>No courses yet</h2>
-          <p style={{ color: '#9ca3af', marginBottom: '2rem' }}>Upload your first syllabus to get started</p>
+          <BookOpen size={48} color="#1E7B45" style={{ margin: '0 auto 1rem' }} />
+          <h2 style={{ color: '#0F172A', fontWeight: 700, fontSize: '1.5rem', marginBottom: '0.75rem' }}>No courses yet</h2>
+          <p style={{ color: '#4B5563', marginBottom: '2rem' }}>Upload your first syllabus to get started</p>
           <Link href="/upload" className="btn-primary" style={{ justifyContent: 'center' }}>
             <Upload size={16} /> Upload Syllabus
           </Link>
@@ -109,8 +109,8 @@ export default function DashboardPage() {
       <div className="page-header">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#e0e7ff', marginBottom: '0.25rem' }}>Dashboard</h1>
-            <p style={{ color: '#9ca3af', fontSize: '0.9rem' }}>{courses.length} course{courses.length !== 1 ? 's' : ''} loaded</p>
+            <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>Dashboard</h1>
+            <p style={{ color: '#4B5563', fontSize: '0.9rem' }}>{courses.length} course{courses.length !== 1 ? 's' : ''} loaded</p>
           </div>
           <Link href="/upload" className="btn-primary" style={{ fontSize: '0.875rem', padding: '0.6rem 1.25rem' }}>
             <Upload size={14} /> Upload More
@@ -125,49 +125,49 @@ export default function DashboardPage() {
         animate="visible"
         style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem', marginBottom: '2rem' }}
       >
-        <motion.div variants={itemVariants}><StatCard icon={BookOpen} label="Courses" value={courses.length} color="#818cf8" href="/course" /></motion.div>
-        <motion.div variants={itemVariants}><StatCard icon={ClipboardList} label="Assignments" value={allAssignments.length} color="#c084fc" href="/kanban" /></motion.div>
-        <motion.div variants={itemVariants}><StatCard icon={GraduationCap} label="Exams" value={allExams.length} color="#f43f5e" href="/calendar" /></motion.div>
-        <motion.div variants={itemVariants}><StatCard icon={TrendingUp} label="Completion" value={`${completionPct}%`} color="#10b981" /></motion.div>
+        <motion.div variants={itemVariants}><StatCard icon={BookOpen} label="Courses" value={courses.length} color="#1E7B45" href="/course" /></motion.div>
+        <motion.div variants={itemVariants}><StatCard icon={ClipboardList} label="Assignments" value={allAssignments.length} color="#0F4C3A" href="/kanban" /></motion.div>
+        <motion.div variants={itemVariants}><StatCard icon={GraduationCap} label="Exams" value={allExams.length} color="#80C242" href="/calendar" /></motion.div>
+        <motion.div variants={itemVariants}><StatCard icon={TrendingUp} label="Completion" value={`${completionPct}%`} color="#16A34A" /></motion.div>
       </motion.div>
 
       {/* Completion bar */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
         className="glass" style={{ padding: '1.25rem 1.5rem', marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-          <span style={{ color: '#e0e7ff', fontWeight: 600, fontSize: '0.9rem' }}>Overall Progress</span>
-          <span style={{ color: '#a5b4fc', fontWeight: 700 }}>{completionPct}%</span>
+          <span style={{ color: '#0F172A', fontWeight: 600, fontSize: '0.9rem' }}>Overall Progress</span>
+          <span style={{ color: '#1E7B45', fontWeight: 700 }}>{completionPct}%</span>
         </div>
         <div className="progress-bar">
           <div className="progress-bar-fill" style={{ width: `${completionPct}%` }} />
         </div>
-        <p style={{ color: '#6b7280', fontSize: '0.8rem', marginTop: '0.4rem' }}>{completed} of {allAssignments.length} assignments completed</p>
+        <p style={{ color: '#6B7280', fontSize: '0.8rem', marginTop: '0.4rem' }}>{completed} of {allAssignments.length} assignments completed</p>
       </motion.div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '1.5rem' }}>
         {/* Courses */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="glass" style={{ padding: '1.5rem' }}>
-          <h2 style={{ color: '#e0e7ff', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <BookOpen size={16} color="#818cf8" /> My Courses
+          <h2 style={{ color: '#0F172A', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <BookOpen size={16} color="#1E7B45" /> My Courses
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {courses.map((c) => (
               <Link key={c.id} href={`/course/${c.id}`} style={{
                 display: 'flex', alignItems: 'center', gap: '0.75rem',
                 padding: '0.75rem', borderRadius: '10px',
-                background: 'rgba(99,102,241,0.06)',
-                border: '1px solid rgba(99,102,241,0.1)',
+                background: 'rgba(128,194,66,0.1)',
+                border: '1px solid rgba(128,194,66,0.3)',
                 textDecoration: 'none',
                 transition: 'all 0.15s',
               }}>
-                <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg,#4f46e5,#9333ea)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg,#0F4C3A,#1E7B45)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <BookOpen size={16} color="#fff" />
                 </div>
                 <div style={{ flex: 1, overflow: 'hidden' }}>
-                  <div style={{ color: '#e0e7ff', fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.title}</div>
-                  <div style={{ color: '#6b7280', fontSize: '0.75rem' }}>{c.course_code} · {c.semester}</div>
+                  <div style={{ color: '#0F172A', fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.title}</div>
+                  <div style={{ color: '#4B5563', fontSize: '0.75rem' }}>{c.course_code} · {c.semester}</div>
                 </div>
-                <ArrowRight size={14} color="#4b5563" />
+                <ArrowRight size={14} color="#6B7280" />
               </Link>
             ))}
           </div>
@@ -175,11 +175,11 @@ export default function DashboardPage() {
 
         {/* Upcoming */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="glass" style={{ padding: '1.5rem' }}>
-          <h2 style={{ color: '#e0e7ff', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <Clock size={16} color="#f59e0b" /> Upcoming Deadlines
+          <h2 style={{ color: '#0F172A', fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Clock size={16} color="#F59E0B" /> Upcoming Deadlines
           </h2>
           {upcoming.length === 0 ? (
-            <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>No upcoming deadlines</p>
+            <p style={{ color: '#4B5563', fontSize: '0.875rem' }}>No upcoming deadlines</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {upcoming.map((item, i) => {
@@ -188,17 +188,17 @@ export default function DashboardPage() {
                 const title = isExam ? `${(item as Exam).type} Exam` : (item as Assignment).title;
                 const daysLeft = date ? Math.ceil((new Date(date).getTime() - Date.now()) / (1000 * 60 * 60 * 24)) : null;
                 return (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem', borderRadius: '10px', background: 'rgba(30,27,46,0.5)', border: '1px solid rgba(99,102,241,0.1)' }}>
-                    <Calendar size={16} color={isExam ? '#f43f5e' : '#818cf8'} />
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.75rem', borderRadius: '10px', background: '#FFFFFF', border: '1px solid #E5E7EB' }}>
+                    <Calendar size={16} color={isExam ? '#DC2626' : '#1E7B45'} />
                     <div style={{ flex: 1, overflow: 'hidden' }}>
-                      <div style={{ color: '#e0e7ff', fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</div>
-                      {date && <div style={{ color: '#6b7280', fontSize: '0.75rem' }}>{new Date(date).toLocaleDateString()}</div>}
+                      <div style={{ color: '#0F172A', fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{title}</div>
+                      {date && <div style={{ color: '#4B5563', fontSize: '0.75rem' }}>{new Date(date).toLocaleDateString()}</div>}
                     </div>
                     {daysLeft !== null && (
                       <span style={{
                         fontSize: '0.75rem', fontWeight: 600, borderRadius: '6px', padding: '2px 8px',
-                        background: daysLeft <= 3 ? 'rgba(239,68,68,0.15)' : daysLeft <= 7 ? 'rgba(245,158,11,0.15)' : 'rgba(16,185,129,0.15)',
-                        color: daysLeft <= 3 ? '#fca5a5' : daysLeft <= 7 ? '#fcd34d' : '#6ee7b7',
+                        background: daysLeft <= 3 ? 'rgba(220,38,38,0.1)' : daysLeft <= 7 ? 'rgba(245,158,11,0.1)' : 'rgba(22,163,74,0.1)',
+                        color: daysLeft <= 3 ? '#DC2626' : daysLeft <= 7 ? '#D97706' : '#16A34A',
                       }}>
                         {daysLeft === 0 ? 'Today' : daysLeft === 1 ? 'Tomorrow' : `${daysLeft}d`}
                       </span>

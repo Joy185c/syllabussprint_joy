@@ -27,10 +27,11 @@ export function Navbar() {
         position: 'sticky',
         top: 0,
         zIndex: 50,
-        background: 'rgba(15, 14, 23, 0.85)',
+        background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(99, 102, 241, 0.15)',
+        borderBottom: '1px solid #E5E7EB',
+        boxShadow: '0 4px 12px rgba(15, 76, 58, 0.03)',
       }}
     >
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px' }}>
@@ -59,8 +60,8 @@ export function Navbar() {
                   borderRadius: '8px',
                   fontSize: '0.85rem',
                   fontWeight: active ? 600 : 400,
-                  color: active ? '#a5b4fc' : '#9ca3af',
-                  background: active ? 'rgba(99, 102, 241, 0.12)' : 'transparent',
+                  color: active ? '#FFFFFF' : '#4B5563',
+                  background: active ? '#80C242' : 'transparent',
                   textDecoration: 'none',
                   transition: 'all 0.15s ease',
                   position: 'relative',
@@ -75,8 +76,8 @@ export function Navbar() {
                       position: 'absolute',
                       inset: 0,
                       borderRadius: '8px',
-                      background: 'rgba(99, 102, 241, 0.12)',
-                      border: '1px solid rgba(99, 102, 241, 0.25)',
+                      background: '#80C242',
+                      border: '1px solid #1E7B45',
                       zIndex: -1,
                     }}
                     transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}

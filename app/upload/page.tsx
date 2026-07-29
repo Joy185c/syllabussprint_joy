@@ -104,10 +104,10 @@ export default function UploadPage() {
           animate={{ opacity: 1, y: 0 }}
           style={{ textAlign: 'center', marginBottom: '2rem' }}
         >
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#e0e7ff', marginBottom: '0.5rem' }}>
+          <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.5rem' }}>
             Upload Your <span className="gradient-text">Syllabus</span>
           </h1>
-          <p style={{ color: '#9ca3af' }}>PDF, Markdown, or TXT — our AI handles the rest</p>
+          <p style={{ color: '#4B5563' }}>PDF, Markdown, or TXT — our AI handles the rest</p>
         </motion.div>
 
         {/* Drop Zone */}
@@ -117,12 +117,12 @@ export default function UploadPage() {
               <div
                 {...getRootProps()}
                 style={{
-                  border: `2px dashed ${isDragActive ? '#6366f1' : 'rgba(99,102,241,0.3)'}`,
+                  border: `2px dashed ${isDragActive ? '#80C242' : '#E5E7EB'}`,
                   borderRadius: '20px',
-                  padding: '3rem 2rem',
+                  padding: '4rem 2rem',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  background: isDragActive ? 'rgba(99,102,241,0.08)' : 'rgba(30,27,46,0.5)',
+                  background: isDragActive ? 'rgba(128,194,66,0.08)' : '#FFFFFF',
                   transition: 'all 0.2s ease',
                   backdropFilter: 'blur(12px)',
                 }}
@@ -131,19 +131,20 @@ export default function UploadPage() {
                 <motion.div animate={{ scale: isDragActive ? 1.1 : 1 }}>
                   <div style={{
                     width: '64px', height: '64px',
-                    background: 'linear-gradient(135deg, #4f46e5, #9333ea)',
+                    background: 'linear-gradient(135deg, #0F4C3A, #1E7B45)',
                     borderRadius: '16px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    margin: '0 auto 1rem',
+                    margin: '0 auto 1.5rem',
+                    boxShadow: '0 8px 24px rgba(15, 76, 58, 0.15)'
                   }}>
                     <Upload size={28} color="#fff" />
                   </div>
                 </motion.div>
-                <p style={{ color: '#e0e7ff', fontWeight: 600, marginBottom: '0.5rem', fontSize: '1.05rem' }}>
-                  {isDragActive ? 'Drop it here!' : 'Drag & drop your syllabus'}
+                <p style={{ color: '#0F172A', fontWeight: 600, marginBottom: '0.5rem', fontSize: '1.05rem' }}>
+                  Drag & drop your syllabus here
                 </p>
-                <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>or click to browse files</p>
-                <p style={{ color: '#4b5563', fontSize: '0.8rem', marginTop: '0.75rem' }}>PDF, MD, TXT · Max 20MB</p>
+                <p style={{ color: '#4B5563', fontSize: '0.875rem' }}>or click to browse files</p>
+                <p style={{ color: '#6B7280', fontSize: '0.8rem', marginTop: '0.75rem' }}>PDF, MD, TXT · Max 20MB</p>
               </div>
 
               {/* Selected file */}
@@ -154,16 +155,16 @@ export default function UploadPage() {
                   className="glass"
                   style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.875rem 1.25rem', marginTop: '1rem' }}
                 >
-                  <File size={20} color="#818cf8" />
-                  <span style={{ flex: 1, color: '#e0e7ff', fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <File size={20} color="#1E7B45" />
+                  <span style={{ flex: 1, color: '#0F172A', fontSize: '0.9rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {file.name}
                   </span>
-                  <span style={{ color: '#6b7280', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
+                  <span style={{ color: '#4B5563', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
                     {(file.size / 1024 / 1024).toFixed(2)} MB
                   </span>
                   <button
                     onClick={(e) => { e.stopPropagation(); setFile(null); }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#6b7280', padding: '2px' }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF', padding: '2px' }}
                   >
                     <X size={16} />
                   </button>
@@ -176,9 +177,9 @@ export default function UploadPage() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   style={{
-                    display: 'flex', alignItems: 'flex-start', gap: '0.75rem',
-                    background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
-                    borderRadius: '12px', padding: '1rem 1.25rem', marginTop: '1rem', color: '#fca5a5',
+                    background: 'rgba(220, 38, 38, 0.1)', border: '1px solid rgba(220, 38, 38, 0.2)',
+                    borderRadius: '12px', padding: '1rem 1.25rem', marginTop: '1rem', color: '#DC2626',
+                    fontSize: '0.9rem', display: 'flex', alignItems: 'flex-start', gap: '0.75rem'
                   }}
                 >
                   <AlertCircle size={18} style={{ flexShrink: 0, marginTop: '1px' }} />
@@ -195,6 +196,7 @@ export default function UploadPage() {
                   width: '100%', justifyContent: 'center', marginTop: '1.25rem',
                   opacity: !file ? 0.4 : 1,
                   cursor: !file ? 'not-allowed' : 'pointer',
+                  background: '#1E7B45'
                 }}
               >
                 <Sparkles size={16} />
@@ -214,7 +216,7 @@ export default function UploadPage() {
                 {status === 'done' ? (
                   <CheckCircle size={48} color="#10b981" style={{ margin: '0 auto' }} />
                 ) : (
-                  <Loader2 size={48} color="#818cf8" style={{ margin: '0 auto', animation: 'spin 1s linear infinite' }} />
+                  <Loader2 size={48} color="#1E7B45" style={{ margin: '0 auto', animation: 'spin 1s linear infinite' }} />
                 )}
               </div>
 
@@ -229,20 +231,20 @@ export default function UploadPage() {
                         display: 'flex', alignItems: 'center', gap: '0.75rem',
                         padding: '0.75rem 1rem',
                         borderRadius: '10px',
-                        background: isCurrent ? 'rgba(99,102,241,0.15)' : 'transparent',
-                        border: isCurrent ? '1px solid rgba(99,102,241,0.3)' : '1px solid transparent',
+                        background: isCurrent ? 'rgba(30,123,69,0.1)' : 'transparent',
+                        border: isCurrent ? '1px solid rgba(30,123,69,0.25)' : '1px solid transparent',
                         opacity: i > currentStepIndex && status !== 'done' ? 0.3 : 1,
                         transition: 'all 0.3s',
                       }}
                     >
                       {isDone ? (
-                        <CheckCircle size={18} color="#10b981" />
+                        <CheckCircle size={18} color="#16A34A" />
                       ) : isCurrent ? (
-                        <Loader2 size={18} color="#818cf8" style={{ animation: 'spin 1s linear infinite' }} />
+                        <Loader2 size={18} color="#1E7B45" style={{ animation: 'spin 1s linear infinite' }} />
                       ) : (
-                        <step.icon size={18} color="#6b7280" />
+                        <step.icon size={18} color="#9CA3AF" />
                       )}
-                      <span style={{ color: isCurrent ? '#e0e7ff' : isDone ? '#6ee7b7' : '#6b7280', fontSize: '0.9rem' }}>
+                      <span style={{ color: isCurrent ? '#0F172A' : isDone ? '#16A34A' : '#9CA3AF', fontSize: '0.9rem' }}>
                         {step.label}
                       </span>
                     </div>

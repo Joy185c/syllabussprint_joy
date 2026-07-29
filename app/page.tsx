@@ -8,12 +8,12 @@ import {
 } from 'lucide-react';
 
 const features = [
-  { icon: FileText, title: 'PDF Extraction', desc: 'Reads any syllabus PDF or Markdown', color: '#818cf8' },
-  { icon: Brain, title: 'AI Parsing', desc: 'GPT extracts every deadline & topic', color: '#c084fc' },
-  { icon: Clock, title: 'Study Timeline', desc: 'Auto-scheduled preparation tasks', color: '#34d399' },
-  { icon: Kanban, title: 'Kanban Board', desc: 'Drag-and-drop task management', color: '#60a5fa' },
-  { icon: BarChart3, title: 'Analytics', desc: 'Track progress & completion rates', color: '#f59e0b' },
-  { icon: Calendar, title: 'Calendar View', desc: 'All deadlines on one calendar', color: '#f472b6' },
+  { icon: FileText, title: 'PDF Extraction', desc: 'Reads any syllabus PDF or Markdown', color: '#1E7B45' },
+  { icon: Brain, title: 'AI Parsing', desc: 'GPT extracts every deadline & topic', color: '#0F4C3A' },
+  { icon: Clock, title: 'Study Timeline', desc: 'Auto-scheduled preparation tasks', color: '#80C242' },
+  { icon: Kanban, title: 'Kanban Board', desc: 'Drag-and-drop task management', color: '#16A34A' },
+  { icon: BarChart3, title: 'Analytics', desc: 'Track progress & completion rates', color: '#059669' },
+  { icon: Calendar, title: 'Calendar View', desc: 'All deadlines on one calendar', color: '#10B981' },
 ];
 
 const steps = [
@@ -50,9 +50,9 @@ export default function LandingPage() {
           >
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
-              background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.3)',
+              background: 'rgba(128,194,66,0.15)', border: '1px solid rgba(128,194,66,0.4)',
               borderRadius: '100px', padding: '0.35rem 1rem', marginBottom: '1.5rem',
-              fontSize: '0.85rem', color: '#a5b4fc',
+              fontSize: '0.85rem', color: '#0F4C3A', fontWeight: 600
             }}>
               <Sparkles size={14} />
               AI-Powered Academic Planner
@@ -62,11 +62,11 @@ export default function LandingPage() {
               <img src="/logo.png" alt="SyllabusSprint Logo" style={{ height: '180px', width: 'auto', objectFit: 'contain' }} />
             </div>
 
-            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: '1.5rem', color: '#e0e7ff' }}>
+            <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 700, lineHeight: 1.2, marginBottom: '1.5rem', color: '#0F4C3A' }}>
               Your AI Study Companion
             </h1>
 
-            <p style={{ fontSize: '1.15rem', color: '#9ca3af', maxWidth: '600px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '1.15rem', color: '#4B5563', maxWidth: '600px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
               Upload your university syllabus and instantly generate a visual Kanban board,
               study timeline, assignment tracker, and exam schedule — all powered by AI.
             </p>
@@ -75,9 +75,9 @@ export default function LandingPage() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center', marginBottom: '2.5rem' }}>
               {['✓ Timeline', '✓ Kanban Board', '✓ Study Plan', '✓ Deadlines', '✓ Analytics'].map((f) => (
                 <span key={f} style={{
-                  background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)',
+                  background: 'rgba(30,123,69,0.1)', border: '1px solid rgba(30,123,69,0.2)',
                   borderRadius: '100px', padding: '0.35rem 1rem',
-                  fontSize: '0.85rem', color: '#a5b4fc',
+                  fontSize: '0.85rem', color: '#1E7B45', fontWeight: 500
                 }}>{f}</span>
               ))}
             </div>
@@ -110,25 +110,26 @@ export default function LandingPage() {
                 <div style={{
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem',
                   padding: '1.25rem 1.5rem',
-                  background: 'rgba(99,102,241,0.08)',
-                  border: '1px solid rgba(99,102,241,0.2)',
+                  background: '#FFFFFF',
+                  border: '1px solid #E5E7EB',
                   borderRadius: '16px',
                   minWidth: '120px',
+                  boxShadow: '0 4px 12px rgba(15, 76, 58, 0.03)',
                   transition: 'all 0.2s',
                 }}>
                   <div style={{
                     width: '44px', height: '44px',
-                    background: `linear-gradient(135deg, #4f46e5, #9333ea)`,
+                    background: `linear-gradient(135deg, #0F4C3A, #1E7B45)`,
                     borderRadius: '12px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                     <step.icon size={20} color="#fff" />
                   </div>
-                  <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#e0e7ff' }}>{step.label}</span>
-                  <span style={{ fontSize: '0.75rem', color: '#6b7280', textAlign: 'center' }}>{step.desc}</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.9rem', color: '#0F172A' }}>{step.label}</span>
+                  <span style={{ fontSize: '0.75rem', color: '#4B5563', textAlign: 'center' }}>{step.desc}</span>
                 </div>
                 {i < steps.length - 1 && (
-                  <ArrowRight size={20} color="rgba(99,102,241,0.4)" style={{ margin: '0 0.5rem' }} />
+                  <ArrowRight size={20} color="#CBD5E1" style={{ margin: '0 0.5rem' }} />
                 )}
               </motion.div>
             ))}
@@ -145,10 +146,10 @@ export default function LandingPage() {
             viewport={{ once: true }}
             style={{ textAlign: 'center', marginBottom: '3rem' }}
           >
-            <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#e0e7ff', marginBottom: '0.75rem' }}>
+            <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.75rem' }}>
               Everything you need to <span className="gradient-text">ace your semester</span>
             </h2>
-            <p style={{ color: '#9ca3af', fontSize: '1rem' }}>Upload once, organized forever</p>
+            <p style={{ color: '#4B5563', fontSize: '1rem' }}>Upload once, organized forever</p>
           </motion.div>
 
           <motion.div
@@ -174,8 +175,8 @@ export default function LandingPage() {
                 }}>
                   <f.icon size={22} color={f.color} />
                 </div>
-                <h3 style={{ fontWeight: 700, color: '#e0e7ff', marginBottom: '0.4rem' }}>{f.title}</h3>
-                <p style={{ color: '#9ca3af', fontSize: '0.9rem', lineHeight: 1.6 }}>{f.desc}</p>
+                <h3 style={{ fontWeight: 700, color: '#0F172A', marginBottom: '0.4rem' }}>{f.title}</h3>
+                <p style={{ color: '#4B5563', fontSize: '0.9rem', lineHeight: 1.6 }}>{f.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -195,10 +196,10 @@ export default function LandingPage() {
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
               <img src="/logo.png" alt="SyllabusSprint Logo" style={{ height: '80px', width: 'auto', objectFit: 'contain' }} />
             </div>
-            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#e0e7ff', marginBottom: '1rem' }}>
+            <h2 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0F172A', marginBottom: '1rem' }}>
               Ready to sprint through your semester?
             </h2>
-            <p style={{ color: '#9ca3af', marginBottom: '2rem' }}>
+            <p style={{ color: '#4B5563', marginBottom: '2rem' }}>
               Upload your syllabus and get a complete academic plan in under 60 seconds.
             </p>
             <Link href="/upload" className="btn-primary">
