@@ -2,12 +2,21 @@
 import { parseOffice } from 'officeparser';
 import Tesseract from 'tesseract.js';
 
+import { tmpdir } from 'os';
+import { join } from 'path';
+import { randomBytes } from 'crypto';
+import { promises as fs } from 'fs';
+
 export async function extractTextFromOffice(buffer: Buffer, ext: string): Promise<string> {
   console.log(`[OfficeParser] ====== START OFFICE EXTRACTION ======`);
   console.log(`[OfficeParser] Extension: ${ext}, Buffer length: ${buffer.length}`);
   const startTime = Date.now();
+  
+  const tmpPath = join(tmpdir(), `${randomBytes(8).toString('hex')}.${ext}`);
+  
   try {
-     const ast = await parseOffice(buffer);
+     await fs.writeFile(tmpPath, buffer);
+     const ast = await parseOffice(tmpPath);
      const text = ast.toText();
      console.log(`[OfficeParser] Extracted ${text.length} chars in ${Date.now() - startTime}ms`);
      if (!text || text.trim().length === 0) throw new Error('Empty text returned');
@@ -18,6 +27,8 @@ export async function extractTextFromOffice(buffer: Buffer, ext: string): Promis
        throw new Error('Legacy DOC format detected. Please save as DOCX and try again.');
      }
      throw new Error(`Failed to parse ${ext?.toUpperCase() || 'document'} file. Please check the file format.`);
+  } finally {
+     await fs.unlink(tmpPath).catch(console.error);
   }
 }
 
