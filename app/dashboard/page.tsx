@@ -58,6 +58,15 @@ export default function DashboardPage() {
     enabled: !!workspaceId,
   });
 
+  const { data: timelineData } = useQuery({
+    queryKey: ['timeline', workspaceId],
+    queryFn: async () => {
+      const res = await fetch(`/api/timeline?workspace_id=${workspaceId}`);
+      return res.json();
+    },
+    enabled: !!workspaceId,
+  });
+
   const courses = data?.courses ?? [];
   const allAssignments = courses.flatMap((c) => (c.assignments ?? []) as Assignment[]);
   const allExams = courses.flatMap((c) => (c.exams ?? []) as Exam[]);
@@ -75,6 +84,9 @@ export default function DashboardPage() {
       return new Date(da).getTime() - new Date(db).getTime();
     })
     .slice(0, 5);
+
+  const today = new Date().toISOString().split('T')[0];
+  const todaysStudySessions = timelineData?.items?.filter((i: any) => i.type === 'study_session' && i.date?.startsWith(today)) ?? [];
 
   const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } };
   const itemVariants = { hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0 } };
@@ -212,6 +224,29 @@ export default function DashboardPage() {
             </div>
           )}
         </motion.div>
+        
+        {/* Today's Study Sessions */}
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="glass" style={{ padding: '1.5rem', gridColumn: '1 / -1' }}>
+          <h2 style={{ color: colors.text, fontWeight: 700, fontSize: '1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Calendar size={16} color="#22C55E" /> Today's Study Sessions
+          </h2>
+          {todaysStudySessions.length === 0 ? (
+            <p style={{ color: colors.textMuted, fontSize: '0.875rem' }}>No study sessions scheduled for today. Relax!</p>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+              {todaysStudySessions.map((session: any, i: number) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '1rem', borderRadius: '10px', background: 'rgba(34,197,94,0.1)', border: `1px solid rgba(34,197,94,0.3)` }}>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22C55E', marginTop: '6px' }} />
+                  <div>
+                    <div style={{ color: colors.text, fontWeight: 600, fontSize: '0.9rem' }}>{session.title}</div>
+                    {session.description && <div style={{ color: colors.textMuted, fontSize: '0.8rem', marginTop: '0.25rem' }}>{session.description}</div>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </motion.div>
+
       </div>
     </div>
   );

@@ -28,10 +28,14 @@ export default function CalendarPage() {
   });
 
   const events = data?.items?.map((item: any) => {
-    let color = '#1E7B45'; // default primary
-    if (item.type === 'exam') color = '#DC2626';
-    else if (item.type === 'task') color = '#0F4C3A';
-    else if (item.type === 'assignment') color = '#1E7B45';
+    let color = '#9CA3AF'; // Important Dates -> Gray
+    const lTitle = item.title?.toLowerCase() || '';
+    if (item.type === 'assignment' || lTitle.includes('assignment')) color = '#F97316'; // Orange
+    else if (lTitle.includes('quiz')) color = '#A855F7'; // Purple
+    else if (item.type === 'exam' || lTitle.includes('midterm') || lTitle.includes('final')) color = '#EF4444'; // Red
+    else if (lTitle.includes('project')) color = '#EAB308'; // Yellow
+    else if (lTitle.includes('presentation')) color = '#3B82F6'; // Blue
+    else if (item.type === 'study_session' || lTitle.includes('study')) color = '#22C55E'; // Green
 
     return {
       id: item.id,

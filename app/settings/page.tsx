@@ -1,16 +1,22 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getWorkspaceId, resetWorkspace } from '@/lib/workspace';
 import { useTheme } from '@/lib/theme';
-import { AlertTriangle, Download, Sun, Moon, Trash2, CheckCircle, Loader2 } from 'lucide-react';
+import { AlertTriangle, Download, Sun, Moon, Trash2, Calendar, FileText, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { ConfirmModal } from '@/components/ui/modal';
+import { AcademicPlannerPDF } from '@/components/pdf/AcademicPlannerPDF';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function SettingsPage() {
   const [workspaceId, setWorkspaceId] = useState('');
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [exportingPdf, setExportingPdf] = useState(false);
+  const [pdfData, setPdfData] = useState<any>(null);
+  const pdfRef = useRef<HTMLDivElement>(null);
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -52,6 +58,60 @@ export default function SettingsPage() {
       toast.error(err.message || 'Export failed');
     } finally {
       setExporting(false);
+    }
+  };
+
+  const handleExportICS = async () => {
+    try {
+      const res = await fetch(`/api/export/ics?workspace_id=${workspaceId}`);
+      if (!res.ok) throw new Error('ICS Export failed');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `SyllabusSprint_Calendar.ics`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      toast.success('Calendar exported successfully!');
+    } catch (err: any) {
+      toast.error(err.message || 'Export failed');
+    }
+  };
+
+  const handleExportPDF = async () => {
+    if (exportingPdf) return;
+    setExportingPdf(true);
+    toast.loading('Generating beautiful planner...', { id: 'pdf-toast' });
+    try {
+      // First fetch the data
+      const res = await fetch(`/api/export?workspace_id=${workspaceId}`);
+      if (!res.ok) throw new Error('Failed to fetch data');
+      const data = await res.json();
+      setPdfData(data);
+
+      // Give React a moment to render the hidden PDF component
+      setTimeout(async () => {
+        if (!pdfRef.current) return;
+        try {
+          const canvas = await html2canvas(pdfRef.current, { scale: 2, useCORS: true });
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF('p', 'pt', 'a4');
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          pdf.save('Academic_Planner.pdf');
+          toast.success('Planner downloaded successfully!', { id: 'pdf-toast' });
+        } catch (e: any) {
+          toast.error('Failed to generate PDF', { id: 'pdf-toast' });
+        } finally {
+          setExportingPdf(false);
+        }
+      }, 500);
+    } catch (err: any) {
+      toast.error(err.message || 'Export failed', { id: 'pdf-toast' });
+      setExportingPdf(false);
     }
   };
 
@@ -178,46 +238,47 @@ export default function SettingsPage() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
 
-              {/* Export */}
+              {/* Export PDF */}
               <div style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 gap: '1rem', flexWrap: 'wrap',
               }}>
                 <div style={{ flex: 1, minWidth: '200px' }}>
                   <div style={{ color: textPrimary, fontWeight: 500, marginBottom: '0.25rem' }}>
-                    Export Workspace Data
+                    Download Academic Planner (PDF)
                   </div>
                   <div style={{ color: textSecondary, fontSize: '0.8rem' }}>
-                    Download a JSON file with all your courses, assignments, exams, topics, and deadlines.
+                    Generate a beautifully formatted Academic Planner for the entire semester.
                   </div>
                 </div>
                 <button
-                  onClick={handleExportData}
-                  disabled={exporting}
+                  onClick={handleExportPDF}
+                  disabled={exportingPdf}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: '0.5rem',
                     padding: '0.7rem 1.4rem',
-                    background: exporting ? '#F1F5F9' : 'rgba(15,76,58,0.08)',
-                    border: `1.5px solid ${exporting ? '#E5E7EB' : '#0F4C3A'}`,
-                    color: exporting ? '#9CA3AF' : '#0F4C3A',
+                    background: exportingPdf ? '#F1F5F9' : '#0F4C3A',
+                    border: `1.5px solid ${exportingPdf ? '#E5E7EB' : '#0F4C3A'}`,
+                    color: exportingPdf ? '#9CA3AF' : '#FFFFFF',
                     borderRadius: '10px', fontWeight: 600,
-                    cursor: exporting ? 'not-allowed' : 'pointer',
+                    cursor: exportingPdf ? 'not-allowed' : 'pointer',
                     fontSize: '0.875rem', transition: 'all 0.2s',
                     whiteSpace: 'nowrap',
                   }}
                   onMouseEnter={e => {
-                    if (!exporting) e.currentTarget.style.background = 'rgba(15,76,58,0.14)';
+                    if (!exportingPdf) e.currentTarget.style.background = '#093B2B';
                   }}
                   onMouseLeave={e => {
-                    if (!exporting) e.currentTarget.style.background = 'rgba(15,76,58,0.08)';
+                    if (!exportingPdf) e.currentTarget.style.background = '#0F4C3A';
                   }}
                 >
-                  {exporting
-                    ? <><Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> Exporting…</>
-                    : <><Download size={15} /> Export JSON</>
+                  {exportingPdf
+                    ? <><Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} /> Generating…</>
+                    : <><FileText size={15} /> Download Planner</>
                   }
                 </button>
               </div>
+
 
               <hr style={{ borderColor: isDark ? '#30363D' : '#E5E7EB', margin: '0' }} />
 
@@ -256,6 +317,11 @@ export default function SettingsPage() {
       </div>
 
       <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+      
+      {/* Hidden PDF renderer */}
+      <div style={{ position: 'absolute', top: '-9999px', left: '-9999px' }}>
+        {pdfData && <AcademicPlannerPDF ref={pdfRef} data={pdfData} />}
+      </div>
     </>
   );
 }

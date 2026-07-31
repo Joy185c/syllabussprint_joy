@@ -3,7 +3,7 @@ import type { ExtractedSyllabus } from '@/lib/validation/syllabus';
 export interface TimelineItem {
   title: string;
   date: string;
-  type: 'assignment' | 'exam' | 'task' | 'deadline';
+  type: 'assignment' | 'exam' | 'task' | 'deadline' | 'study_session';
   description?: string;
 }
 
@@ -20,28 +20,6 @@ export function generateTimeline(data: ExtractedSyllabus): TimelineItem[] {
         type: 'assignment',
         description: a.description,
       });
-
-      // Generate prep tasks leading up to deadline
-      const deadlineDate = new Date(a.deadline);
-      if (!isNaN(deadlineDate.getTime())) {
-        const draftDate = new Date(deadlineDate);
-        draftDate.setDate(draftDate.getDate() - 3);
-        items.push({
-          title: `Draft: ${a.title}`,
-          date: draftDate.toISOString().split('T')[0],
-          type: 'task',
-          description: `Start drafting ${a.title}`,
-        });
-
-        const reviewDate = new Date(deadlineDate);
-        reviewDate.setDate(reviewDate.getDate() - 1);
-        items.push({
-          title: `Review: ${a.title}`,
-          date: reviewDate.toISOString().split('T')[0],
-          type: 'task',
-          description: `Final review before submission`,
-        });
-      }
     }
   }
 
@@ -54,17 +32,18 @@ export function generateTimeline(data: ExtractedSyllabus): TimelineItem[] {
         type: 'exam',
         description: e.topics?.join(', '),
       });
+    }
+  }
 
-      // Add study prep task 5 days before exam
-      const examDate = new Date(e.date);
-      if (!isNaN(examDate.getTime())) {
-        const studyDate = new Date(examDate);
-        studyDate.setDate(studyDate.getDate() - 5);
+  // Add AI-generated study sessions
+  if (data.study_sessions) {
+    for (const session of data.study_sessions) {
+      if (session.date) {
         items.push({
-          title: `Study: ${e.type} prep`,
-          date: studyDate.toISOString().split('T')[0],
-          type: 'task',
-          description: `Begin studying for ${e.type}`,
+          title: session.title,
+          date: session.date,
+          type: 'study_session',
+          description: session.description,
         });
       }
     }

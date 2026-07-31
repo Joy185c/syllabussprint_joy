@@ -13,6 +13,7 @@ Extract the following fields:
 - exams: Array of all exams, quizzes, midterms, finals with { type, date (ISO date if possible), weight (percentage as number), topics }
 - topics: Array of weekly topics with { week (as number), topic, description, learning_objectives, covered_concepts, key_keywords, reading_materials, reference_books, class_activities, lab_activities, deliverables, suggested_study_hours, notes }. Extract as much rich text as possible for these fields. Format text using markdown if appropriate (e.g. lists).
 - weights: Grade breakdown as array of { category, percentage (as number) }
+- study_sessions: Intelligent Study Planner. Generate realistic study sessions leading up to the deadlines of assignments, quizzes, and exams. For each session include { title, date (ISO string), description, type: "study_session" }. Examples: "Read Topic", "Practice", "Revision". Space them logically before the deadline.
 - submission_rules: Any submission or late policy rules
 - office_hours: Instructor office hours info
 

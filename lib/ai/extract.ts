@@ -53,7 +53,7 @@ export async function extractSyllabusData(
         if (attempt === maxRetries) {
           return {
             success: false,
-            error: `Validation failed: ${validated.error.flatten().fieldErrors}`,
+            error: `Validation failed: ${JSON.stringify(validated.error.flatten().fieldErrors)}`,
           };
         }
         continue;

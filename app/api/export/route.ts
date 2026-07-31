@@ -18,21 +18,15 @@ export async function GET(req: NextRequest) {
         assignments (*),
         exams (*),
         topics (*),
-        kanban_cards (*)
+        kanban_cards (*),
+        timeline (*)
       `)
       .eq('workspace_id', workspaceId)
       .order('created_at', { ascending: false });
 
     if (coursesError) throw coursesError;
 
-    // Fetch timeline items
-    const { data: timeline, error: timelineError } = await supabase
-      .from('timeline_items')
-      .select('*')
-      .eq('workspace_id', workspaceId)
-      .order('date', { ascending: true });
-
-    if (timelineError) throw timelineError;
+    const timeline = courses?.flatMap((c: any) => c.timeline ?? []) ?? [];
 
     const exportData = {
       exported_at: new Date().toISOString(),

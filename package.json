@@ -23,6 +23,8 @@
     "@tanstack/react-query": "^5.101.4",
     "framer-motion": "^12.43.0",
     "groq-sdk": "^1.4.1",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "lucide-react": "^1.27.0",
     "next": "16.2.12",
     "officeparser": "^7.5.0",
