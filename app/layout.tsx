@@ -24,10 +24,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}>
         <Providers>
           <Navbar />
-          <main className="min-h-screen">{children}</main>
+          <main className="flex-1">{children}</main>
+          <footer className="py-6 text-center text-sm font-medium text-slate-500 border-t border-slate-200">
+            Developed by <span className="text-slate-700 font-bold">HUSTLE BRIGADE</span>
+          </footer>
           <Toaster
             position="bottom-right"
             toastOptions={{
